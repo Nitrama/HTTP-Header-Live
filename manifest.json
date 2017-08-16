@@ -1,10 +1,10 @@
 ﻿{
 	"manifest_version": 2,
-	"author": "Martin Antrag",
 	"name": "HTTP Header Live",
 	"version": "0.1",
 	"developer": {
-		"name": "Martin Antrag"
+		"name": "Martin Antrag",
+		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
 	},
 	"description": "Displays the HTTP header. Edit it and send it.",
 	"icons": {
