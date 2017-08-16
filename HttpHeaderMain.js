@@ -1,4 +1,4 @@
-﻿//console.log("mööööööööööööp")
+//console.log("mööööööööööööp")
 var SUB_ID = "";
 
 //console.log("Create Window");
@@ -32,6 +32,7 @@ function testfuncHeaders(e){
 }
 
 function notify(request) {
+	set_url=0
 	//console.log("-------------------------------------");
 	////console.log(request.data);
 	if (request.header !== null){
@@ -43,7 +44,9 @@ function notify(request) {
 			//console.log("header ID: " + request_ID)
 			console.log("header:")
 			console.log(header)
-			document.getElementById("header_"+request_ID).innerHTML += "<pre class='big' id='url'>" + header.url + "</pre>" ;
+
+				document.getElementById("header_"+request_ID).innerHTML += "<pre class='big' id='url'>" + header.url + "</pre>" ;
+
 			for (var i of header.requestHeaders) {
 				document.getElementById("header_"+request_ID).innerHTML += "<pre name='header'>" + i.name + ": " + i.value + "</pre>" ;
 			}
@@ -52,11 +55,12 @@ function notify(request) {
 	if (request.post !== null){
 		request_ID = request.post.requestId;
 		post = request.post;
-		is_id_exist(request_ID);
+		
 		console.log("post:")
 		console.log(post);
 		string = ""
 		if (post.requestBody !== undefined){
+		is_id_exist(request_ID);
 			for (var i in post.requestBody.formData) {
 				////console.log(i)
 				string += i + "=" + post.requestBody.formData[i] + "&";
@@ -64,19 +68,14 @@ function notify(request) {
 			string = string.substr(0, string.length-1)
 			document.getElementById("post_"+request_ID).innerHTML =  string;
 		}
-		if (document.getElementById("header_"+request_ID).innerHTML == ""){
-			document.getElementById("header_"+request_ID).innerHTML += "<pre class='big' id='url'>" + post.url + "</pre>" ;
-		}
-		document.getElementById("header_"+request_ID).innerHTML += "<pre name='header'>originUrl: " + post.originUrl + "</pre>" ;
-		
 	}
 	//console.log("--------------------------------------")
 }
 
 function is_id_exist (id) {
-////console.log("IS ID:" + id + "##" + document.getElementById('data_' +id))
-if (document.getElementById('data_' +id) == null){ 
-	
+	////console.log("IS ID:" + id + "##" + document.getElementById('data_' +id))
+	if (document.getElementById('data_' +id) == null){ 
+		
 	newdata = document.createElement("div");
 	newdata.id = 'data_' + id
 	newdata.className = "data"
@@ -116,9 +115,9 @@ function clicked_data(id){
 	})
 	
 	windowscreate.then(onSubWindowCreated, onSubWindowError);
-	}
-	
-	function onSubWindowCreated(windowscreate){
+}
+
+function onSubWindowCreated(windowscreate){
 	//console.log('Sub Window Created');
 	////console.log(windowscreate);
 	////console.log(windowscreate.tabs[0].id);
@@ -129,11 +128,11 @@ function clicked_data(id){
 	)
 	
 	
-	};
-	
-	function onSubWindowError(){
+};
+
+function onSubWindowError(){
 	console.error('Windows Error');
-	};
-	
-	//browser.tabs.onRemoved.addListener(testfuncHeaders)
-	//browser.tabs.onRemoved.addListener(testfuncpost)						
+};
+
+//browser.tabs.onRemoved.addListener(testfuncHeaders)
+//browser.tabs.onRemoved.addListener(testfuncpost)										
