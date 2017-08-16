@@ -1,0 +1,37 @@
+body{
+	
+	max-height: 100%;
+	max-width: 100%;
+	min-height: 100%;
+	min-width: 100%;
+	margin:0;
+}
+#textarea {
+	min-height: 500px;
+	max-height: 500px;
+	overflow: scroll;
+	border: 1px solid #000;
+	margin: 10px 10px 10px 10px;
+	white-space:nowrap;
+} 
+#clearbutton{
+	margin-left:10px;
+}
+pre{
+	padding:0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+pre.big{
+	font-size: larger;
+	font-weight: bolder;
+	
+	
+}
+
+.data {
+	border-bottom: 1px dotted grey;
+	padding-bottom: 10px;
+	
+	
+}
