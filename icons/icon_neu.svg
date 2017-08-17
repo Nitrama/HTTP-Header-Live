@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <defs>
+    <linearGradient id="Unbenannter_Verlauf_7" data-name="Unbenannter Verlauf 7" x1="127.59" y1="831.68" x2="881.5" y2="831.68" gradientTransform="translate(-183.22 317.04) rotate(-30)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0290fb"/>
+      <stop offset="1" stop-color="#41fdfd"/>
+    </linearGradient>
+    <linearGradient id="Unbenannter_Verlauf_7-2" x1="11.83" y1="614.53" x2="997.26" y2="614.53" xlink:href="#Unbenannter_Verlauf_7"/>
+    <linearGradient id="Unbenannter_Verlauf_7-3" x1="11.83" y1="397.22" x2="997.27" y2="397.22" xlink:href="#Unbenannter_Verlauf_7"/>
+    <linearGradient id="Unbenannter_Verlauf_7-4" x1="127.46" y1="179.28" x2="881.64" y2="179.28" xlink:href="#Unbenannter_Verlauf_7"/>
+  </defs>
+  <title>Zeichenfläche 1</title>
+  <g id="Ebene_1" data-name="Ebene 1">
+    <path d="M481.45,14.45,96.31,236.82a50,50,0,0,0-25,43.3V724.84a50,50,0,0,0,25,43.3L481.45,990.5a50,50,0,0,0,50,0L916.59,768.14a50,50,0,0,0,25-43.3V280.12a50,50,0,0,0-25-43.3L531.45,14.45A50,50,0,0,0,481.45,14.45Z" style="fill: aqua"/>
+    <g style="opacity: 0.6000000000000001">
+      <path d="M475,986.81a62.81,62.81,0,0,0,62.81,0l372.33-215a62.81,62.81,0,0,0,31.4-54.39V502.25l-652.91,377Z" style="fill: url(#Unbenannter_Verlauf_7)"/>
+    </g>
+    <g style="opacity: 0.8">
+      <path d="M102.71,771.84l186,107.37,652.91-377V287.51a62.74,62.74,0,0,0-8-30.66L80.16,749.56A62.74,62.74,0,0,0,102.71,771.84Z" style="fill: url(#Unbenannter_Verlauf_7-2)"/>
+    </g>
+    <g style="opacity: 0.8">
+      <path d="M71.89,718.45a63.44,63.44,0,0,0,8.22,31L933.53,256.76a63.44,63.44,0,0,0-22.76-22.63L724.44,125.88,71.31,503Z" style="fill: url(#Unbenannter_Verlauf_7-3)"/>
+    </g>
+    <path d="M999.16,503.32h22.3v-1.45h-22.3C999.17,502.35,999.17,502.83,999.16,503.32Z" style="fill: none"/>
+    <path d="M13.72,501.87H-6.06v1.45H13.73C13.73,502.83,13.72,502.35,13.72,501.87Z" style="fill: none"/>
+    <g style="opacity: 0.6000000000000001">
+      <path d="M71.31,287.51V503L724.44,125.88,537.85,18.15a62.81,62.81,0,0,0-62.81,0l-372.33,215A62.81,62.81,0,0,0,71.31,287.51Z" style="fill: url(#Unbenannter_Verlauf_7-4)"/>
+    </g>
+  </g>
+  <g id="Ebene_2" data-name="Ebene 2">
+    <path d="M776.83,432.2,550.3,301.41a15,15,0,0,0-22.5,13V576a15,15,0,0,0,22.5,13L776.83,458.18A15,15,0,0,0,776.83,432.2Z" style="fill: #fff"/>
+    <path d="M776.83,432.2,550.3,301.41a15,15,0,0,0-22.5,13V576a15,15,0,0,0,22.5,13L776.83,458.18A15,15,0,0,0,776.83,432.2Z" style="fill: #4c4c4c;stroke: #fff;stroke-miterlimit: 10;stroke-width: 5px"/>
+    <path d="M236.64,549.46,463.17,418.67a15,15,0,0,1,22.5,13V693.24a15,15,0,0,1-22.5,13L236.64,575.44A15,15,0,0,1,236.64,549.46Z" style="fill: #4c4c4c;stroke: #fff;stroke-miterlimit: 10;stroke-width: 5px"/>
+  </g>
+</svg>
