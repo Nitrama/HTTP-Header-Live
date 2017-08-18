@@ -1,10 +1,10 @@
 body{
-	
 	max-height: 100%;
 	max-width: 100%;
 	min-height: 100%;
 	min-width: 100%;
 }
+
 #header_data {
 	min-height: 250px;
 	min-width: 550px;
@@ -26,11 +26,13 @@ body{
 	border: 1px solid #000;
 	padding: 10px 10px 10px 10px;
 }
+
 pre {
 	padding:0px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
+
 #replay_Send{
 	top: 600;	
 }

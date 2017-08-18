@@ -7,21 +7,10 @@ function NewWindow() {
 		type:"popup",
 		url:browser.extension.getURL("HttpHeaderMain.html")
 	})
-	windowscreate.then(onWindowCreated, onWindowError);
-	
-}
-
-function onWindowCreated(windowscreate){
-	
 }
 
 function onWindowError(){
 	console.error('Windows Error');
 }
-function onTabError(){
-	console.error('Windows Error');
-}
-
-
 
 browser.browserAction.onClicked.addListener(NewWindow);	

@@ -1,17 +1,13 @@
 ﻿{
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
-	"version": "0.1.2",
+	"version": "0.1.4",
 	"developer": {
 		"name": "Martin Antrag",
 		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
 	},
 	"icons": {
-		"16": "icons/icon_neu.svg",
-		"19": "icons/icon_neu.svg",
-		"32": "icons/icon_neu.svg",
-		"38": "icons/icon_neu.svg",
-		"64": "icons/icon_neu.svg"
+		"64": "icons/64.png"
 	},
 	"description": "Displays the HTTP header. Edit it and send it.",
 	"permissions": [
@@ -22,18 +18,27 @@
 		"<all_urls>"
 	],
 	
+	"icons": {
+		"16": "icons/icon_neu.svg",
+		"19": "icons/icon_neu.svg",
+		"32": "icons/icon_neu.svg",
+		"38": "icons/icon_neu.svg",
+		"64": "icons/icon_neu.svg"
+	},
+	
 	"browser_action": {
 		"default_title": "HTTP Header Live",
 		"default_icon": {
 			"16": "icons/icon_neu.svg",
 			"19": "icons/icon_neu.svg",
-			"32": "icons/icon_neu.svg",
-			"38": "icons/icon_neu.svg",
-			"64": "icons/icon_neu.svg"
-			
+		"32": "icons/icon_neu.svg",
+		"38": "icons/icon_neu.svg",
+		"64": "icons/icon_neu.svg"
+		
 		}
-	},
-	"background": {
+		},
+		"background": {
 		"scripts": ["background.js"]
-	}
-}	
+		}
+		}	
+				
