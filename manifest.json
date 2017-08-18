@@ -1,4 +1,4 @@
-﻿{
+{
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
 	"version": "0.1.4",
@@ -17,19 +17,19 @@
 		"tabs",
 		"<all_urls>"
 	],
+	
 	"browser_action": {
 		"default_title": "HTTP Header Live",
 		"default_icon": {
 			"16": "icons/icon_neu.svg",
 			"19": "icons/icon_neu.svg",
-		"32": "icons/icon_neu.svg",
-		"38": "icons/icon_neu.svg",
-		"64": "icons/icon_neu.svg"
-		
+			"32": "icons/icon_neu.svg",
+			"38": "icons/icon_neu.svg",
+			"64": "icons/icon_neu.svg"
+			
 		}
-		},
-		"background": {
+	},
+	"background": {
 		"scripts": ["background.js"]
-		}
-		}	
-				
+	}
+}	
