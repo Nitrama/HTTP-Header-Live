@@ -1,5 +1,5 @@
 # HTTP-Header-Live
-German:
+German:<br />
 Öffne das Add-on.<br />
 Suche eine Seite mit "POST Parameter" zum beispiel: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_form_method_post<br />
 Sende die Seite ab.<br />
