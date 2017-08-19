@@ -30,21 +30,35 @@ function testfuncHeaders(e){
 
 function notify(request) {
 	//console.log("-------------------------------------");
-	////console.log(request.data);
+	//console.log(request);
 	if (request.header !== null){
 		
 		request_ID = request.header.requestId;
 		header = request.header;
 		if (header.url != ""){
-			is_id_exist(request_ID);
+			if (is_id_exist(request_ID) == true){
+				url = document.getElementById("header_"+request_ID).childNodes[0].textContent
+				//console.log(url)
+				//console.log (url + "####")
+				if (url == ""){
+					
+					header_url_pre = document.createElement("pre");
+					header_url_pre.className = 'big'
+					header_url_pre.id = 'url'
+					header_url_pre.textContent = header.url
+					document.getElementById("header_"+request_ID).innerHTML = ""
+					document.getElementById("header_"+request_ID).appendChild (header_url_pre)
+					
+					
+				}
+				} else {
+				
+				document.getElementById("header_"+request_ID).childNodes[0].textContent = header.url
+			}
 			//console.log("header ID: " + request_ID)
 			//console.log("header:")
 			//console.log(header)
-			url_pre = document.createElement("pre");
-			url_pre.className = 'big'
-			url_pre.id = 'url'
-			url_pre.textContent = header.url
-			document.getElementById("header_"+request_ID).appendChild(url_pre) ;
+			
 			
 			for (var i of header.requestHeaders) {
 				header_pre = document.createElement("pre");
@@ -52,6 +66,7 @@ function notify(request) {
 				header_pre.textContent = i.name + ": " + i.value
 				document.getElementById("header_"+request_ID).appendChild(header_pre)
 			}
+			
 			
 		}
 	}
@@ -73,7 +88,6 @@ function notify(request) {
 		}
 	}
 }
-
 function is_id_exist (id) {
 	////console.log("IS ID:" + id + "##" + document.getElementById('data_' +id))
 	if (document.getElementById('data_' +id) == null){ 
@@ -93,10 +107,17 @@ function is_id_exist (id) {
 		newpost.id = 'post_' + id
 		newpost.className = 'big'
 		
+		
+		header_url_pre = document.createElement("pre");
+		header_url_pre.className = 'big'
+		header_url_pre.id = 'url'
+		
+		newheader.appendChild (header_url_pre)
 		newdata.appendChild(newheader)
 		newdata.appendChild(newpost)
-		
+		return false
 		} else {
+		return true
 		//console.log ("ID Exists")
 	}
 }

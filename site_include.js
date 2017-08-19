@@ -1,8 +1,8 @@
 function setdata(request){
 	//browser.tabs.executeScript 
-	console.log("nat nat")
+	//console.log("nat nat")
 	
-	console.log(request.post)
+	//console.log(request.post)
 	parser = new DOMParser()
 	temp_header = parser.parseFromString(request.header, "text/html"); //data from Sub.js
 	////console.log(temp_header.getElementById('url').innerText)
@@ -22,10 +22,19 @@ function setdata(request){
 	}
 	if (request.post.length > 0 ){
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send(request.post); 
+		xhttp.send(convert(request.post)); //send plain
 		} else {
 		xhttp.send(); 
 	}
 }
 
+function convert(str)
+{
+  str = str.replace("&amp;" , '&');
+  str = str.replace("&gt;"  , '>');
+  str = str.replace("&lt;"  , '<');
+  str = str.replace("&quot;", '"');
+  str = str.replace("&#039;", "'");
+  return str;
+}
 browser.runtime.onMessage.addListener(setdata);			

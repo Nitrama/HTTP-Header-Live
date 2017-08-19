@@ -1,10 +1,10 @@
 ﻿var TAB_ID
 var FIRST = 0
-console.log("nöd nöd");
+//console.log("nöd nöd");
 function notify(request) {
-	console.log("nöd nöd2");
+	//console.log("nöd nöd2");
 	
-	console.log(request)
+	//console.log(request)
 	parser = new DOMParser()
 	header_temp = parser.parseFromString(request.header, "text/html");
 	console.log(header_temp.getElementsByName('header'))
@@ -12,7 +12,7 @@ function notify(request) {
 	if (request.post == undefined) {
 		document.getElementById("post_data").textContent = "";
 		} else {
-		document.getElementById("post_data").textContent = request.post.replace("&amp;" , "&")//data from Main.js 
+		document.getElementById("post_data").textContent = convert(request.post)//data from Main.js 
 	}
 }
 
@@ -54,9 +54,9 @@ function onReload(isreload){
 }
 
 function onExecuted(result) {
-	console.log("nöd nöd");
+	//console.log("nöd nöd");
 	//console.log("test:" + document.getElementById("post_data").innerHTML)
-	post_data = document.getElementById("post_data").innerHTML.replace("&amp;" , "&")
+	post_data = document.getElementById("post_data").innerHTML
 	
 	if (post_data === undefined) {post_data = "";}
 	post_data = post_data.replace("<br>" , "") //FIX Firefox. Insert <BR> when <div> empty
@@ -86,4 +86,12 @@ function onError4(error) {
 browser.runtime.onMessage.addListener(notify);	
 document.getElementById("replay_send").onclick = replay_send;
 
-function escapeHTML(str) { return str.replace(/[&"'<>]/g, (m) => ({ "&": "&amp;", '"': "&quot;", "'": "&#39;", "<": "&lt;", ">": "&gt;" })[m]); }
+function convert(str)
+{
+	str = str.replace("&amp;" , '&');
+	str = str.replace("&gt;"  , '>');
+	str = str.replace("&lt;"  , '<');
+	str = str.replace("&quot;", '"');
+	str = str.replace("&#039;", "'");
+	return str;
+}
