@@ -6,11 +6,14 @@ function NewWindow() {
 		width:600,
 		type:"popup",
 		url:browser.extension.getURL("HttpHeaderMain.html")
-	})
+	});
+	windowscreate.then(onSubWindowCreated, onSubWindowError);
 }
 
-function onWindowError(){
+function onSubWindowError(){
 	console.error('Windows Error');
 }
-
+function onSubWindowCreated(){
+	console.log("Windows created")
+}
 browser.browserAction.onClicked.addListener(NewWindow);	

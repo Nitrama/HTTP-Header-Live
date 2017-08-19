@@ -19,14 +19,11 @@ testfuncHeaders,
 
 function testfuncpost(e) {
 	if (e.requestBody !== null) {
-		////console.log(e.requestpost)
 		notify({post: e , header: null , tab_id: e.tabId})
 	}
 }
 function testfuncHeaders(e){
 	if (e.requestHeaders !== null) {
-		////console.log (e.requestHeaders)
-		////console.log(WindowInfo.tabs[0])
 		notify({header: e , post: null, tab_id: e.tabId})
 	}
 }
@@ -41,22 +38,29 @@ function notify(request) {
 		if (header.url != ""){
 			is_id_exist(request_ID);
 			//console.log("header ID: " + request_ID)
-			console.log("header:")
-			console.log(header)
-			
-			document.getElementById("header_"+request_ID).innerHTML += "<pre class='big' id='url'>" + header.url + "</pre>" ;
+			//console.log("header:")
+			//console.log(header)
+			url_pre = document.createElement("pre");
+			url_pre.className = 'big'
+			url_pre.id = 'url'
+			url_pre.textContent = header.url
+			document.getElementById("header_"+request_ID).appendChild(url_pre) ;
 			
 			for (var i of header.requestHeaders) {
-				document.getElementById("header_"+request_ID).innerHTML += "<pre name='header'>" + i.name + ": " + i.value + "</pre>" ;
+				header_pre = document.createElement("pre");
+				header_pre.setAttribute("name", 'header')
+				header_pre.textContent = i.name + ": " + i.value
+				document.getElementById("header_"+request_ID).appendChild(header_pre)
 			}
+			
 		}
 	}
 	if (request.post !== null){
 		request_ID = request.post.requestId;
 		post = request.post;
 		
-		console.log("post:")
-		console.log(post);
+		//console.log("post:")
+		//console.log(post);
 		string = ""
 		if (post.requestBody !== undefined){
 			is_id_exist(request_ID);
@@ -65,7 +69,7 @@ function notify(request) {
 				string += i + "=" + post.requestBody.formData[i] + "&";
 			}
 			string = string.substr(0, string.length-1)
-			document.getElementById("post_"+request_ID).innerHTML =  string;
+			document.getElementById("post_"+request_ID).textContent =  string;
 		}
 	}
 }
@@ -116,14 +120,17 @@ function clicked_data(id){
 }
 
 function onSubWindowCreated(windowscreate){
-	//console.log('Sub Window Created');
+	console.log('Sub Window Created');
 	////console.log(windowscreate);
 	////console.log(windowscreate.tabs[0].id);
 	////console.log(document.getElementById('data_' + SUB_ID).innerHTML)
-	browser.tabs.sendMessage(
+	tab_send = browser.tabs.sendMessage(
 	windowscreate.tabs[0].id,
-	{data:document.getElementById('data_' + SUB_ID).innerHTML , id: SUB_ID }
+	{post:document.getElementById('post_' + SUB_ID).innerHTML, 
+		header:	document.getElementById('header_' + SUB_ID).innerHTML
+	}
 	)
+	tab_send.then(null, tab_sendError);
 	
 	
 };
@@ -131,6 +138,10 @@ function onSubWindowCreated(windowscreate){
 function onSubWindowError(){
 	console.error('Windows Error');
 };
+function tab_sendError(error) {
+	console.log(`tab_sendError: ${error}`);
+} 
+
 
 //browser.tabs.onRemoved.addListener(testfuncHeaders)
 //browser.tabs.onRemoved.addListener(testfuncpost)													

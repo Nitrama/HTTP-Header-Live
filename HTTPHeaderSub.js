@@ -1,15 +1,19 @@
 ﻿var TAB_ID
+var FIRST = 0
+console.log("nöd nöd");
 function notify(request) {
-	//console.log("nöd nöd");
-	request_ID = request.id
+	console.log("nöd nöd2");
 	
-	////console.log(request.data)
+	console.log(request)
 	parser = new DOMParser()
-	temp = parser.parseFromString(request.data, "text/html");
-	post_data = temp.getElementById("post_" + request_ID).innerHTML
-	if (post_data === undefined) {post_data = "";}
-	document.getElementById("header_data").innerHTML = temp.getElementById("header_" + request_ID).innerHTML
-	document.getElementById("post_data").innerHTML = post_data
+	header_temp = parser.parseFromString(request.header, "text/html");
+	console.log(header_temp.getElementsByName('header'))
+	document.getElementById("header_data").innerHTML = request.header //data from Main.js it safe
+	if (request.post == undefined) {
+		document.getElementById("post_data").textContent = "";
+		} else {
+		document.getElementById("post_data").textContent = request.post.replace("&amp;" , "&")//data from Main.js 
+	}
 }
 
 function replay_send(){
@@ -32,21 +36,25 @@ function getInfoForTab(tabs) {
 
 function onGot(tabInfo){
 	if  (tabInfo.url == document.getElementById("url").innerHTML){
-		onReload();
+		onReload(false);
 		} else {
 		var updating = browser.tabs.update(TAB_ID , {url: document.getElementById("url").innerHTML});
 		updating.then(onReload, onError3);
 	}
 }
 
-function onReload(){
-	executing = browser.tabs.executeScript(TAB_ID, { 
-		file: browser.extension.getURL("/site_include.js" )
-	});
-	executing.then(onExecuted, onError4);
+function onReload(isreload){
+	if (isreload != false || FIRST == 0){
+		FIRST = 1
+		executing = browser.tabs.executeScript(TAB_ID, { 
+			file: browser.extension.getURL("/site_include.js")
+		});
+		executing.then(onExecuted, onError4);
+	} else {onExecuted();}
 }
 
 function onExecuted(result) {
+	console.log("nöd nöd");
 	//console.log("test:" + document.getElementById("post_data").innerHTML)
 	post_data = document.getElementById("post_data").innerHTML.replace("&amp;" , "&")
 	
@@ -55,28 +63,27 @@ function onExecuted(result) {
 	
 	browser.tabs.sendMessage(TAB_ID, {
 		header:document.getElementById("header_data").innerHTML,
-		post:post_data,
-		tab_id:TAB_ID
+		post:post_data
 	});
 }
 
 function onError1(error) {
-	//console.log(`Error1: ${error}`);
+	console.log(`Error1: ${error}`);
 } 
 
 function onError2(error) {
-	//console.log(`Error2: ${error}`);
+	console.log(`Error2: ${error}`);
 }
 
 function onError3(error) {
-	//console.log(`Error3: ${error}`);
+	console.log(`Error3: ${error}`);
 } 
 
 function onError4(error) {
-	//console.log(`Error4: ${error}`);
+	console.log(`Error4: ${error}`);
 } 
 
 browser.runtime.onMessage.addListener(notify);	
 document.getElementById("replay_send").onclick = replay_send;
 
-
+function escapeHTML(str) { return str.replace(/[&"'<>]/g, (m) => ({ "&": "&amp;", '"': "&quot;", "'": "&#39;", "<": "&lt;", ">": "&gt;" })[m]); }
