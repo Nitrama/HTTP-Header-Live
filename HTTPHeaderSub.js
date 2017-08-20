@@ -7,7 +7,7 @@ function notify(request) {
 	//console.log(request)
 	parser = new DOMParser()
 	header_temp = parser.parseFromString(request.header, "text/html");
-	console.log(header_temp.getElementsByName('header'))
+	//console.log(header_temp.getElementsByName('header'))
 	document.getElementById("header_data").innerHTML = request.header //data from Main.js it safe
 	if (request.post == undefined) {
 		document.getElementById("post_data").textContent = "";

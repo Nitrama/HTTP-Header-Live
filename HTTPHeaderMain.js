@@ -134,14 +134,14 @@ function clicked_data(id){
 		height:600,
 		width:600,
 		type:"popup",
-		url:browser.extension.getURL("HttpHeaderSub.html")
+		url:browser.extension.getURL("HTTPHeaderSub.html")
 	})
 	
 	windowscreate.then(onSubWindowCreated, onSubWindowError);
 }
 
 function onSubWindowCreated(windowscreate){
-	console.log('Sub Window Created');
+	//console.log('Sub Window Created');
 	////console.log(windowscreate);
 	////console.log(windowscreate.tabs[0].id);
 	////console.log(document.getElementById('data_' + SUB_ID).innerHTML)
