@@ -88,10 +88,10 @@ document.getElementById("replay_send").onclick = replay_send;
 
 function convert(str)
 {
-	str = str.replace("&amp;" , '&');
-	str = str.replace("&gt;"  , '>');
-	str = str.replace("&lt;"  , '<');
-	str = str.replace("&quot;", '"');
-	str = str.replace("&#039;", "'");
+	str = str.replace(/&amp;/g , '&');
+	str = str.replace(/&gt;/g , '>');
+	str = str.replace(/&lt;/g  , '<');
+	str = str.replace(/&quot;/g , '"');
+	str = str.replace(/&#039;/g , "'");
 	return str;
 }
