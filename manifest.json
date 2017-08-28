@@ -1,13 +1,16 @@
 {
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"developer": {
 		"name": "Martin Antrag",
 		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
 	},
 	"icons": {
 		"64": "icons/64.png"
+	},
+	"options_ui": {
+		"page": "options.html"
 	},
 	"description": "Displays the HTTP header. Edit it and send it.",
 	"permissions": [
@@ -30,6 +33,7 @@
 		}
 	},
 	"background": {
-		"scripts": ["background.js"]
+	"scripts": ["background.js"]
 	}
-}	
+	}	
+		
