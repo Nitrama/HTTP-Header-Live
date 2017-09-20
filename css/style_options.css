@@ -1,0 +1,19 @@
+body {
+	font-family: Courier New;
+	
+}
+
+.big{
+	font-size:larger;
+	font-weight:bold;
+	
+	
+}
+.select{
+	width:280px;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+  color: LightGray ;
+}
+

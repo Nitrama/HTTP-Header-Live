@@ -1,0 +1,64 @@
+body{
+	max-height: 100%;
+	max-width: 100%;
+	min-height: 100%;
+	min-width: 100%;
+	font-family: Courier New;
+	overflow: none;
+	margin:0px;
+}
+.header_url {
+	display:flex;
+	margin-left: 10px;
+	margin-right:10px;
+	overflow: none;
+}
+
+#select_method{
+	width:10%;
+	float:left;
+}
+
+input {
+	width:90%;
+	height: 18px;
+}
+
+
+#header_data {
+	float:none;
+	min-height: 250px;
+	max-height: 250px;
+	overflow: scroll;
+	border: 1px solid #000;
+	margin-left: 10px;
+	margin-right:10px;
+} 
+
+#post_data{
+	min-height: 250px;
+	max-height: 250px;
+	overflow: scroll;
+	border: 1px solid #000;
+	margin-left: 10px;
+	margin-right:10px;
+	white-space:nowrap;
+}
+
+pre {
+	padding:0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#replay_send{	
+	float:left;
+	margin-left: 10px;
+}
+
+#content_length{
+	float:none;
+	padding-top:3px;
+	margin-left:200px
+	
+}
