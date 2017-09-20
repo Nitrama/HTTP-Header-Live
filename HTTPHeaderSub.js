@@ -1,97 +1,118 @@
-﻿var TAB_ID
-var FIRST = 0
-//console.log("nöd nöd");
+﻿TAB_ID = ""
 function notify(request) {
-	//console.log("nöd nöd2");
-	
-	//console.log(request)
-	parser = new DOMParser()
-	header_temp = parser.parseFromString(request.header, "text/html");
-	//console.log(header_temp.getElementsByName('header'))
-	document.getElementById("header_data").innerHTML = request.header //data from Main.js it safe
-	if (request.post == undefined) {
-		document.getElementById("post_data").textContent = "";
-		} else {
-		document.getElementById("post_data").textContent = convert(request.post)//data from Main.js 
+	//console.log(request.data)
+	document.getElementById("select_method").value = request.data.method;
+	document.getElementById("header_url").value = request.data.url;
+	TAB_ID  = request.data.tabId
+	if (request.data.requestHeaders !== undefined){
+		string = ""
+		for (var i of request.data.requestHeaders) {
+			string += i.name + ": " + i.value + "\r\n"
+		}
 	}
+	document.getElementById("header_data").textContent = string;
+	
+	if (request.data.requestBody !== undefined && request.data.requestBody != null){
+		string = ""
+		for (var i in request.data.requestBody.formData) {
+			string += i + "=" + request.data.requestBody.formData[i] + "&";
+		}
+		string = string.substr(0, string.length-1)
+		document.getElementById("post_data").textContent = string;
+		document.getElementById("content_length").textContent = "Content-Length:" + document.getElementById("post_data").textContent.length
+	}
+	
 }
 
 function replay_send(){
+	url = document.getElementById("header_url").value
+	method = document.getElementById("select_method").value
+	post = document.getElementById("post_data").textContent
+	header = document.getElementById("header_data").textContent,
 	
-	var querying = browser.tabs.query({active: true});
-	querying.then(getInfoForTab, onError1);
-}
-
-function getInfoForTab(tabs) {
-	////console.log (tabs)
-	for (var tab of tabs) {
-		if  (tab.url.indexOf("moz-extension") == -1)  {
-			//console.log (tab.id)
-			TAB_ID = tab.id
-			var gettingInfo = browser.tabs.get(TAB_ID);
-			gettingInfo.then(onGot, onError2);
+	temp_headers = header.replace(/\r\n/g, "<br>");
+	temp_headers = temp_headers.split("<br>");
+	//console.log(temp_headers)
+	// The data we are going to send in our request
+	var myHeaders = new Headers();
+	for (temp_header of temp_headers ){
+		split = temp_header.split(": " ,1)
+		//console.log(split)
+		if (split != ""){
+			myHeaders.append(split[0], split[1]);
 		}
 	}
-}
-
-function onGot(tabInfo){
-	if  (tabInfo.url == document.getElementById("url").innerHTML){
-		onReload(false);
-		} else {
-		var updating = browser.tabs.update(TAB_ID , {url: document.getElementById("url").innerHTML});
-		updating.then(onReload, onError3);
+	
+	if (method == "POST"){
+		myHeaders.append("Content-type", "application/x-www-form-urlencoded");
 	}
-}
-
-function onReload(isreload){
-	if (isreload != false || FIRST == 0){
-		FIRST = 1
-		executing = browser.tabs.executeScript(TAB_ID, { 
-			file: browser.extension.getURL("/site_include.js")
-		});
-		executing.then(onExecuted, onError4);
-	} else {onExecuted();}
-}
-
-function onExecuted(result) {
-	//console.log("nöd nöd");
-	//console.log("test:" + document.getElementById("post_data").innerHTML)
-	post_data = document.getElementById("post_data").innerHTML
+	//console.log(request.post )
+	data = {  
+		"method": method,  
+		"headers": myHeaders,
+		"mode":"no-cors"
+	}
+	if (post.length != 0 ){
+		data.body = post 
+	}
 	
-	if (post_data === undefined) {post_data = "";}
-	post_data = post_data.replace("<br>" , "") //FIX Firefox. Insert <BR> when <div> empty
-	
-	browser.tabs.sendMessage(TAB_ID, {
-		header:document.getElementById("header_data").innerHTML,
-		post:post_data
+	fetch(url , data)  
+	.then(  
+	function(response) {  
+		if (response.status !== 200) {  
+			alert('Site Problem. Status Code: ' + response.status);  
+			return;  
+		}
+		response.blob().then(function(data) {  
+			//console.log(data);  
+			objectURL = URL.createObjectURL(data);
+			//console.log(objectURL);  
+			//console.log("###",TAB_ID,"###")
+			var gettingInfo = browser.tabs.get(TAB_ID );
+			gettingInfo.then(function (){on_get_tab(objectURL)}, on_get_tab_error);
+			
+			
+		});  
+	}  
+	)  
+	.catch(function(err) {  
+		console.error('Fetch Error:', err);  
 	});
 }
 
-function onError1(error) {
-	console.log(`Error1: ${error}`);
+function on_get_tab(bloburl) {
+	var updating = browser.tabs.update(TAB_ID , {url: bloburl});
+	updating.then(null, onError);
 } 
 
-function onError2(error) {
-	console.log(`Error2: ${error}`);
+function on_get_tab_error() {
+	var getting = browser.windows.getAll({
+		windowTypes: ["normal"]
+	});
+	
+	getting.then(windows, onError);
+	
+} 
+function windows(windowInfoArray) {
+	
+	var create = browser.tabs.create({windowId:windowInfoArray[0].id});
+	create.then(create_tab , onError);
 }
 
-function onError3(error) {
-	console.log(`Error3: ${error}`);
+function create_tab (info_tab){
+	TAB_ID = info_tab.id
+	replay_send()
+}
+
+
+
+function onError(error) {
+	console.error('Error:', error);
+alert ('Error:'+ error)
 } 
 
-function onError4(error) {
-	console.log(`Error4: ${error}`);
-} 
 
 browser.runtime.onMessage.addListener(notify);	
-document.getElementById("replay_send").onclick = replay_send;
+document.getElementById("replay_send").addEventListener ("click" , replay_send)
+document.getElementById("post_data").addEventListener("input", function() {document.getElementById("content_length").textContent = "Content-Length:" + document.getElementById("post_data").textContent.length});
 
-function convert(str)
-{
-	str = str.replace(/&amp;/g , '&');
-	str = str.replace(/&gt;/g , '>');
-	str = str.replace(/&lt;/g  , '<');
-	str = str.replace(/&quot;/g , '"');
-	str = str.replace(/&#039;/g , "'");
-	return str;
-}

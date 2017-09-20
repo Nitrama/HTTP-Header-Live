@@ -3,15 +3,21 @@
 <html>
 	<head>
 		<title>HTTP Header Live Sub</title>
-		<link rel="shortcut icon" type="image/x-icon" href="icons/icon.svg">
+		<link rel="shortcut icon" type="image/x-icon" href="icons/icon_neu.svg">
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="style_sub.css">
+		<link rel="stylesheet" href="css/style_sub.css">
 	</head>
 	
 	<body>
-		<div contenteditable="true" id="header_data"></div>
-		<div contenteditable="true" id="post_data"></div>
-		<button type="button" id="replay_send" >Replay Send</button>
+		<div class="header_url">
+			<select id="select_method" size="1">
+				<option value="GET" selected>GET</option>
+				<option value="POST" >POST</option>
+			</select><input value="" id="header_url" ></div>
+		<pre contenteditable="true" id="header_data"></pre>
+		<pre contenteditable="true" id="post_data"></pre>
+		<div><button type="button" id="replay_send" >Replay Send</button></div>
+		<label id="content_length">Content-Length:null</label>
 		<script src="HTTPHeaderSub.js" ></script>
 	</body>
 </html>
