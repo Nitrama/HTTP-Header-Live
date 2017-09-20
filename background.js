@@ -1,5 +1,3 @@
-﻿var WindowInfo = "";
-var TabInfo = "";
 function NewWindow() {
 	windowscreate = browser.windows.create({
 		height:600,
