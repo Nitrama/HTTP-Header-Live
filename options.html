@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/style_options.css">
+	</head>
+	
+	<body>
+		<!--<div><input type="checkbox"><Label>Open HTTPHeaderLive in a new tab</Label></div>-->
+		<div>
+			<div>
+			<Label class="big">Exlude URLs</Label></div>
+			<div>
+				<select class="select" id="exclude_url" size="5">
+				</select>
+			</div>
+			<div>
+				<button id="button_delete_url">Delete Selected</button>
+			</div>
+			<div>
+				<label>Add New URL:</label><input placeholder="facebook.com" id="input_new_url"></input><button id="button_new_url">OK</button>
+			</div>
+			
+		</div>
+		<div><br></div>
+		<div>
+			<div>
+				<Label class="big">Exlude file extension</Label>
+			</div>
+			<div>
+				<select class="select" id="exclude_file" size="5">
+				</select>
+			</div>
+			<div>
+				<button id="button_delete_file">Delete Selected</button>
+			</div>
+			<div>
+				<label>Add New File extension:</label><input placeholder=".jpg" id="input_new_file"></input><button id="button_new_file">OK</button>
+			</div>
+		</div>
+		
+		
+	</div>
+	<!--<button type="button" id="clearbutton" >Clear</button>-->
+	<script src="options.js" ></script>
+</body>
+</html>						
