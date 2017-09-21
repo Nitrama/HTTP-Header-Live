@@ -38,8 +38,8 @@ function new_url(){
 				item["urls"] = [url]
 			} else {item["urls"].push(url)}
 			browser.storage.local.set({urls: item["urls"]})
-			document.getElementById("exclude_url").innerHTML = "";
-			document.getElementById("exclude_file").innerHTML = "";
+			document.getElementById("exclude_url").textContent = "";
+			document.getElementById("exclude_file").textContent = "";
 			gettingItem = browser.storage.local.get();
 			gettingItem.then(onGot, onError);
 		}
@@ -61,8 +61,8 @@ function new_file(){
 				item["files"] = [file]
 			} else {item["files"].push(file)}
 			browser.storage.local.set({files: item["files"]})
-			document.getElementById("exclude_url").innerHTML = "";
-			document.getElementById("exclude_file").innerHTML = "";
+			document.getElementById("exclude_url").textContent = "";
+			document.getElementById("exclude_file").textContent = "";
 			gettingItem = browser.storage.local.get();
 			gettingItem.then(onGot, onError);
 		}
@@ -78,8 +78,8 @@ function delete_url(){
 			if (item["urls"] != undefined) {
 				item["urls"].splice(value, 1)
 				browser.storage.local.set({urls: item["urls"]})
-				document.getElementById("exclude_url").innerHTML = "";
-				document.getElementById("exclude_file").innerHTML = "";
+				document.getElementById("exclude_url").textContent = "";
+				document.getElementById("exclude_file").textContent = "";
 				gettingItem = browser.storage.local.get();
 				gettingItem.then(onGot, onError);
 			}
@@ -97,8 +97,8 @@ function delete_file(){
 			if (item["files"] != undefined) {
 				item["files"].splice(value, 1)
 				browser.storage.local.set({files: item["files"]})
-				document.getElementById("exclude_url").innerHTML = "";
-				document.getElementById("exclude_file").innerHTML = "";
+				document.getElementById("exclude_url").textContent = "";
+				document.getElementById("exclude_file").textContent = "";
 				gettingItem = browser.storage.local.get();
 				gettingItem.then(onGot, onError);
 			}
