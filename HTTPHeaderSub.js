@@ -29,40 +29,37 @@ function replay_send(){
 	method = document.getElementById("select_method").value
 	post = document.getElementById("post_data").textContent
 	header = document.getElementById("header_data").textContent,
-	
+	//console.log(header)
 	temp_headers = header.replace(/\r\n/g, "<br>");
 	temp_headers = temp_headers.split("<br>");
 	//console.log(temp_headers)
 	// The data we are going to send in our request
 	var myHeaders = new Headers();
 	for (temp_header of temp_headers ){
-		split = temp_header.split(": " ,1)
+		split = temp_header.split(": " ,2)
 		//console.log(split)
 		if (split != ""){
 			myHeaders.append(split[0], split[1]);
 		}
 	}
 	
-	if (method == "POST"){
-		myHeaders.append("Content-type", "application/x-www-form-urlencoded");
-	}
-	//console.log(request.post )
 	data = {  
-		"method": method,  
-		"headers": myHeaders,
-		"mode":"no-cors"
+		"method": method
 	}
-	if (post.length != 0 ){
-		data.body = post 
+	if (method == "POST"){
+		//console.log(post ,":",post.length,":", method)
+		myHeaders.delete("Content-type")
+		myHeaders.append("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+		//console.log(post ,":",post.length,":", method)
+		if (post.length != 0 ){
+			data.body = post 
+		}
 	}
-	
+	data.headers = myHeaders
 	fetch(url , data)  
 	.then(  
 	function(response) {  
-		if (response.status !== 200) {  
-			alert('Site Problem. Status Code: ' + response.status);  
-			return;  
-		}
+
 		response.blob().then(function(data) {  
 			//console.log(data);  
 			objectURL = URL.createObjectURL(data);
@@ -96,18 +93,18 @@ function on_get_tab_error() {
 function windows(windowInfoArray) {
 	
 	var create = browser.tabs.create({windowId:windowInfoArray[0].id});
-	create.then(create_tab , onError);
+create.then(create_tab , onError);
 }
 
 function create_tab (info_tab){
-	TAB_ID = info_tab.id
-	replay_send()
+TAB_ID = info_tab.id
+replay_send()
 }
 
 
 
 function onError(error) {
-	console.error('Error:', error);
+console.error('Error:', error);
 alert ('Error:'+ error)
 } 
 
