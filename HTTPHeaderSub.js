@@ -1,6 +1,7 @@
 ﻿TAB_ID = ""
+//console.log("muuup")
 function notify(request) {
-	//console.log(request.data)
+	console.log(request.data.method)
 	document.getElementById("select_method").value = request.data.method;
 	document.getElementById("header_url").value = request.data.url;
 	TAB_ID  = request.data.tabId
@@ -46,7 +47,7 @@ function replay_send(){
 	data = {  
 		"method": method
 	}
-	if (method == "POST"){
+	if (method != "GET"){
 		//console.log(post ,":",post.length,":", method)
 		myHeaders.delete("Content-type")
 		myHeaders.append("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
@@ -59,7 +60,7 @@ function replay_send(){
 	fetch(url , data)  
 	.then(  
 	function(response) {  
-
+		
 		response.blob().then(function(data) {  
 			//console.log(data);  
 			objectURL = URL.createObjectURL(data);
@@ -93,19 +94,19 @@ function on_get_tab_error() {
 function windows(windowInfoArray) {
 	
 	var create = browser.tabs.create({windowId:windowInfoArray[0].id});
-create.then(create_tab , onError);
+	create.then(create_tab , onError);
 }
 
 function create_tab (info_tab){
-TAB_ID = info_tab.id
-replay_send()
+	TAB_ID = info_tab.id
+	replay_send()
 }
 
 
 
 function onError(error) {
-console.error('Error:', error);
-alert ('Error:'+ error)
+	console.error('Error:', error);
+	alert ('Error:'+ error)
 } 
 
 
