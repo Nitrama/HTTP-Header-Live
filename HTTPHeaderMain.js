@@ -130,7 +130,7 @@ function onSubWindowCreated(windowscreate ,requestID){
 }
 
 function info_tabs(info_tab , test , tab) {
-	//console.log(tab)
+	//console.log(tab , ":" , info_tab)
 	if (tab.status == "complete" && info_tab == TAB_ID){
 		browser.tabs.onUpdated.removeListener(info_tabs)
 		on_tab_complete(TAB_ID , REQUESTID)
@@ -140,7 +140,6 @@ function info_tabs(info_tab , test , tab) {
 function on_tab_complete (tab_id , requestID){
 	//console.log("on_tab_complete")
 	//console.log(tab_id)
-	//console.log("2")
 	
 	////console.log(document.getElementById('data_' + SUB_ID).innerHTML)
 	tab_send = browser.tabs.sendMessage(
@@ -150,7 +149,10 @@ function on_tab_complete (tab_id , requestID){
 	tab_send.then(function (){
 		null
 	},
-	function (error) {console.error(`Error: ${error}`);}
+	function (error) {
+		//console.error(`Error: ${error}`);
+		on_tab_complete (tab_id , requestID)
+	}
 	);
 }	
 
