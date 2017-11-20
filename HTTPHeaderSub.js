@@ -1,7 +1,7 @@
 ﻿TAB_ID = ""
 //console.log("muuup")
 function notify(request) {
-	console.log(request.data.method)
+	//console.log(request.data.method)
 	document.getElementById("select_method").value = request.data.method;
 	document.getElementById("header_url").value = request.data.url;
 	TAB_ID  = request.data.tabId
