@@ -192,10 +192,11 @@ gettingItem.then(function (item){
 					string2 += data +"="+WEBREQUEST_DATA[value]["requestBody"]["formData"][data][0] + "&"
 				}
 				string2 = string2.substr(0, string2.length-1)
+				string += "\r\n" + string2 + "\r\n"
 			}
-			string += "\r\n" + string2 + "\r\n"
+			
 			string += "-----------------------\r\n\r\n"
 		}
 		document.getElementById("savefilehref").href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(string)
 		document.getElementById("savefilehref").download = "HTTPHeaderLive.txt"
-	})	
+	})			
