@@ -1,48 +1,48 @@
 body{
-	max-height: 100%;
 	max-width: 100%;
-	min-height: 100%;
 	min-width: 100%;
+	height: 100vh;
+	margin:0;
+	padding-bottom: 60px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 	font-family: Courier New;
-	overflow: none;
-	margin:0px;
+	
 }
 .header_url {
+	margin: 10px 10px 0px 10px;
 	display:flex;
-	margin-left: 10px;
-	margin-right:10px;
-	overflow: none;
 }
 
 #select_method{
 	width:10%;
 	float:left;
+	height: 25px;
 }
 
 input {
 	width:90%;
-	height: 18px;
+	height: 19px;
 }
 
 
 #header_data {
 	float:none;
-	min-height: 250px;
-	max-height: 250px;
+	flex-grow: 1;
+	margin: 0px 10px 0px 10px;
 	overflow: scroll;
 	border: 1px solid #000;
-	margin-left: 10px;
-	margin-right:10px;
+	height: 3vh;
 } 
 
 #post_data{
-	min-height: 250px;
-	max-height: 250px;
+	flex-grow: 1;
+	margin: 0px 10px 0px 10px;
 	overflow: scroll;
 	border: 1px solid #000;
-	margin-left: 10px;
-	margin-right:10px;
 	white-space:nowrap;
+	height: 3vh;
 }
 
 pre {
@@ -50,15 +50,16 @@ pre {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
+#footer {
+	margin: 10px 10px 10px 10px;
+	
+}
 
 #replay_send{	
 	float:left;
-	margin-left: 10px;
 }
-
 #content_length{
 	float:none;
 	padding-top:3px;
-	margin-left:200px
-	
+	margin-left:100px
 }
