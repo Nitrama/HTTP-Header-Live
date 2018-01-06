@@ -3,10 +3,9 @@ var EXLUDE_ITEMS = ""
 var WEBREQUEST_DATA = []
 var TAB_ID = ""
 var REQUESTID
-gettingItem = browser.storage.local.get();
-gettingItem.then(function (item){
-	EXLUDE_ITEMS = item
-})
+
+StorageChange()
+
 browser.webRequest.onBeforeRequest.addListener(
 setdata_webRequest,
 {urls: ["<all_urls>"]},
@@ -22,6 +21,7 @@ setdata_webRequest,
 {urls: ["<all_urls>"]},
 ["responseHeaders"]
 );	
+
 function setdata_webRequest(e) {
 	if (document.getElementById("capture_checkbox").checked == true){
 		//console.log(e)
@@ -98,7 +98,7 @@ function set_data_html (ID){
 	newheader.id = 'header_' + ID
 	header_url = document.createElement("pre");
 	header_url.className = 'big'
-
+	
 	header_url.textContent = decodeURI(WEBREQUEST_DATA[ID].url)
 	newheader.appendChild (header_url)
 	if (WEBREQUEST_DATA[ID].requestHeaders !== undefined){
@@ -136,9 +136,6 @@ function set_data_html (ID){
 		new_server_header.appendChild (header_pre)
 	}
 	newdata.appendChild(new_server_header)
-	
-	
-	
 	document.getElementById("textarea").appendChild (newdata);
 	if (document.getElementById("auto_scroll_checkbox").checked == true) {
 		document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight - document.getElementById("textarea").clientHeight;
@@ -184,8 +181,8 @@ function on_tab_complete (tab_id , requestID){
 	}
 	);
 }	
-function not_on_exlude_list (url){
-	request_url = new URL(url)
+function not_on_exlude_list (url_site){
+	request_url = new URL(url_site)
 	//console.log(url)
 	//.pathname split (".") -1
 	//.hostname instr ("url") -1
@@ -209,8 +206,34 @@ function not_on_exlude_list (url){
 			}
 		}	
 	} 	
-	return true;
+	if (EXLUDE_ITEMS["text"] !== undefined){
+		if_return = true
+		for (text of EXLUDE_ITEMS["text"]) {
+			//console.log(url_site , "###" , text , "###", url_site.indexOf(text))
+			if (url_site.indexOf(text) >= 0){
+				return true;
+			} 
+			else {if_return = false;}
+		}
+		if (if_return == true){
+			return true;
+		} 
+		else {return false;}
+	} 
+	else {
+		return true;
+	}
+	
 }
+
+function StorageChange(){
+	//console.log("New Storgae")
+	gettingItem = browser.storage.local.get();
+	gettingItem.then(function (item){
+	EXLUDE_ITEMS = item
+})
+}
+
 function onSubWindowError(){
 	console.error('Windows Error');
 }
@@ -220,6 +243,9 @@ function tab_sendError(error) {
 function onError(error) {
 	console.error(`Error: ${error}`);
 }
+
+
+browser.storage.onChanged.addListener(StorageChange);
 document.getElementById("clearbutton").addEventListener("click" , function (){document.getElementById("textarea").innerHTML = "" ; WEBREQUEST_DATA = [];})
 document.getElementById("optionsbutton").addEventListener ("click" , function (){browser.runtime.openOptionsPage()})
 document.getElementById("savefilehref").addEventListener ("click" , function (){
