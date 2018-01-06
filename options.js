@@ -2,117 +2,89 @@ gettingItem = browser.storage.local.get();
 gettingItem.then(onGot, onError);
 function onGot(item) {
 	if (item["urls"] != undefined) {
-		var x = document.getElementById("exclude_url");
-		for (url in item["urls"]) {
-			var option = document.createElement("option");
-			option.text = item["urls"][url];
-			option.value = url
-			x.add(option); 
-		}	
+		adding_to_select ("exclude_url" , item["urls"])
 	}
 	if (item["files"] != undefined) {
-		var x = document.getElementById("exclude_file");
-		for (file in item["files"]) {
-			var option = document.createElement("option");
-			option.text = item["files"][file];
-			option.value = file
-			x.add(option); 
-		}	
+		adding_to_select ("exclude_file" , item["files"])	
+	}	
+	if (item["text"] != undefined) {
+		adding_to_select ("include_text" , item["text"])
 	}
-	if (item["open_tab"] != undefined) {
+	if (item["new_tab_open"] != undefined) {
+		if (item["new_tab_open"] == true){
+		document.getElementById("newtab_checkbox").setAttribute("checked" ,true )
+		}
 	}
 	//console.log(item)
 }
 
-function new_url(){
-	url = document.getElementById("input_new_url").value;
-	document.getElementById("input_new_url").value = "";
-	if (url != ""){
-		var x = document.getElementById("exclude_url");
+function adding_to_select (id , items){
+	var x = document.getElementById(id);
+	for (item in items) {
 		var option = document.createElement("option");
-		option.text = url;
+		option.text = items[item];
+		option.value = item
 		x.add(option); 
-		gettingItem = browser.storage.local.get("urls");
+	}	
+}
+
+function new_string (id, storageid){
+	string = document.getElementById(id).value;
+	document.getElementById(id).value = "";
+	if (string != ""){
+		gettingItem = browser.storage.local.get(storageid);
 		gettingItem.then(function (item){
-			if (item["urls"] == undefined) {
-				item["urls"] = [url]
-			} else {item["urls"].push(url)}
-			browser.storage.local.set({urls: item["urls"]})
-			document.getElementById("exclude_url").textContent = "";
-			document.getElementById("exclude_file").textContent = "";
-			gettingItem = browser.storage.local.get();
-			gettingItem.then(onGot, onError);
+			if (item[storageid] == undefined) {
+				item[storageid] = [string]
+			} else {item[storageid].push(string)}
+			browser.storage.local.set({[storageid]: item[storageid]})
+			clear_select()
 		}
 		, onError);
 	}
 }
 
-function new_file(){
-	file = document.getElementById("input_new_file").value;
-	document.getElementById("input_new_file").value = "";
-	if (file != ""){
-		var x = document.getElementById("exclude_file");
-		var option = document.createElement("option");
-		option.text = file;
-		x.add(option); 
-		gettingItem = browser.storage.local.get(["files"]);
-		gettingItem.then(function (item){
-			if (item["files"] == undefined) {
-				item["files"] = [file]
-			} else {item["files"].push(file)}
-			browser.storage.local.set({files: item["files"]})
-			document.getElementById("exclude_url").textContent = "";
-			document.getElementById("exclude_file").textContent = "";
-			gettingItem = browser.storage.local.get();
-			gettingItem.then(onGot, onError);
-		}
-		, onError);
-	}
-}
-function delete_url(){
-	var e = document.getElementById("exclude_url");
+function delete_item_from_storage(id, storageid){
+	var e = document.getElementById(id);
 	if (e.options[e.selectedIndex] !== undefined){
 		var value = e.options[e.selectedIndex].value;
-		gettingItem = browser.storage.local.get(["urls"]);
+		gettingItem = browser.storage.local.get([storageid]);
 		gettingItem.then(function (item){
-			if (item["urls"] != undefined) {
-				item["urls"].splice(value, 1)
-				browser.storage.local.set({urls: item["urls"]})
-				document.getElementById("exclude_url").textContent = "";
-				document.getElementById("exclude_file").textContent = "";
-				gettingItem = browser.storage.local.get();
-				gettingItem.then(onGot, onError);
-			}
-		}
-		, onError);
-	}
-}
-
-function delete_file(){
-	var e = document.getElementById("exclude_file");
-	if (e.options[e.selectedIndex] !== undefined){
-		var value = e.options[e.selectedIndex].value;
-		gettingItem = browser.storage.local.get(["files"]);
-		gettingItem.then(function (item){
-			if (item["files"] != undefined) {
-				item["files"].splice(value, 1)
-				browser.storage.local.set({files: item["files"]})
-				document.getElementById("exclude_url").textContent = "";
-				document.getElementById("exclude_file").textContent = "";
-				gettingItem = browser.storage.local.get();
-				gettingItem.then(onGot, onError);
+			if (item[storageid] !== undefined) {
+				item[storageid].splice(value ,1)
+				browser.storage.local.set({[storageid]: item[storageid]})
+				clear_select()
 			}
 		}, onError);
-		
 	}
 }
 
+function clear_select(){
+	document.getElementById("exclude_url").textContent = "";
+	document.getElementById("exclude_file").textContent = "";
+	document.getElementById("include_text").textContent = "";
+	gettingItem = browser.storage.local.get();
+	gettingItem.then(onGot, onError);
+}
 
+function checkbox_change_new_tab (){
+	if (document.getElementById("newtab_checkbox").checked == true){
+		browser.storage.local.set({"new_tab_open": true})
+	} 
+	else{
+		browser.storage.local.set({"new_tab_open": false})
+	}
+	
+}
 
 function onError(error) {
 	console.error(`Error: ${error}`);
 }
-document.getElementById("button_delete_url").onclick = delete_url;
-document.getElementById("button_delete_file").onclick = delete_file;	
-document.getElementById("button_new_url").onclick = new_url;
-document.getElementById("button_new_file").onclick = new_file;								
+
+document.getElementById("button_delete_url").onclick = function (){delete_item_from_storage("exclude_url", "urls")};
+document.getElementById("button_delete_file").onclick = function (){delete_item_from_storage("exclude_file", "files")};	
+document.getElementById("button_delete_text").onclick = function (){delete_item_from_storage("include_text", "text")};	
+document.getElementById("button_new_url").onclick = function (){new_string("input_new_url", "urls")};
+document.getElementById("button_new_file").onclick = function (){new_string("input_new_file", "files")};			
+document.getElementById("button_new_text").onclick = function (){new_string("input_new_text", "text")};		
+document.getElementById("newtab_checkbox").onchange = checkbox_change_new_tab;	
