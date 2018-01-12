@@ -142,7 +142,7 @@ function StorageChange(){
 				RESEND_TAB_NEW = true;
 			} 
 			else {
-				RESEND_TAB_NEW=false
+				RESEND_TAB_NEW = false;
 			}
 		}
 	})

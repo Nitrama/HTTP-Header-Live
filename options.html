@@ -7,15 +7,17 @@
 	</head>
 	
 	<body>
-		<!--<div><input type="checkbox"><Label>Open HTTPHeaderLive in a new tab</Label></div>-->
 		<div>
 			<div>
-			<Label class="big">Exlude URLs</Label></div>
-			<div>
-				<select class="select" id="exclude_url" size="5">
-				</select>
+				<Label class="big">Exlude URLs</Label>
+			</div>
+			<div class="select">
+				<ul id="exclude_url">
+				</ul>
 			</div>
 			<div>
+				<button id="button_activate_url">Activate All</button>
+				<button id="button_deactivate_url">Deactivate All</button>
 				<button id="button_delete_url">Delete Selected</button>
 			</div>
 			<div>
@@ -29,10 +31,14 @@
 				<Label class="big">Exlude file extension</Label>
 			</div>
 			<div>
-				<select class="select" id="exclude_file" size="5">
-				</select>
+				<div class="select">
+					<ul id="exclude_file">
+					</ul>
+				</div>
 			</div>
 			<div>
+				<button id="button_activate_file">Activate All</button>
+				<button id="button_deactivate_file">Deactivate All</button>
 				<button id="button_delete_file">Delete Selected</button>
 			</div>
 			<div>
@@ -45,10 +51,14 @@
 				<Label class="big">Include Text in URL</Label>
 			</div>
 			<div>
-				<select class="select" id="include_text" size="5">
-				</select>
+				<div class="select">
+					<ul id="include_text">
+					</ul>
+				</div>
 			</div>
 			<div>
+				<button id="button_activate_text">Activate All</button>
+				<button id="button_deactivate_text">Deactivate All</button>
 				<button id="button_delete_text">Delete Selected</button>
 			</div>
 			<div>
@@ -59,7 +69,7 @@
 			<label id="newtab_label"><input type="checkbox" id="newtab_checkbox">Open Resend in new Tab</label>
 		</div>
 	</div>
-	<!--<button type="button" id="clearbutton" >Clear</button>-->
+	<script src="updateStorage.js" ></script>
 	<script src="options.js" ></script>
 </body>
-</html>						
+</html>													

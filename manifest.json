@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"developer": {
 		"name": "Martin Antrag",
 		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
@@ -35,5 +35,10 @@
 	},
 	"background": {
 		"scripts": ["background.js"]
+	},
+	"applications":{
+		"gecko":{
+			"id": "{ed102056-8b4f-43a9-99cd-6d1b25abe87e}" 
+		}
 	}
 }	

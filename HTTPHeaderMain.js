@@ -52,7 +52,6 @@ function setdata_webRequest(e) {
 							}
 							i++;
 						}
-						
 					}
 				}
 				else if (e.responseHeaders !== undefined ){
@@ -186,52 +185,51 @@ function not_on_exlude_list (url_site){
 	//console.log(url)
 	//.pathname split (".") -1
 	//.hostname instr ("url") -1
-	if (EXLUDE_ITEMS["urls"] !== undefined) {
-		for (url of EXLUDE_ITEMS["urls"]) {
-			//console.log(url)
-			//console.log (request_url.hostname + "###" + request_url.hostname.indexOf(url))
-			if (request_url.hostname.indexOf(url) != -1){
+	for (url of EXLUDE_ITEMS["urls"]) {
+		//console.log(url)
+		//console.log (request_url.hostname + "###" + request_url.hostname.indexOf(url))
+		if (url["active"] == true){
+			if (request_url.hostname.indexOf(url["string"]) != -1){
 				//console.log ("url:" +request_url.hostname)
 				return false;
 			}
-		}	
-	} 	
-	if (EXLUDE_ITEMS["files"] !== undefined) {
-		for (file of EXLUDE_ITEMS["files"]) {
-			//console.log(file)
-			//console.log (request_url.pathname + "+++" +request_url.pathname.indexOf(file, ((-1) - file.length)))
-			if (request_url.pathname.indexOf(file, ((-1) - file.length)) != -1){
+		}
+	}	 	
+	for (file of EXLUDE_ITEMS["files"]) {
+		//console.log(file)
+		//console.log (request_url.pathname + "+++" +request_url.pathname.indexOf(file, ((-1) - file.length)))
+		if (file["active"] == true){
+			if (request_url.pathname.indexOf(file["string"], ((-1) - file.length)) != -1){
 				//console.log("file:" + request_url.pathname)
 				return false;
 			}
-		}	
-	} 	
-	if (EXLUDE_ITEMS["text"] !== undefined){
-		if_return = true
-		for (text of EXLUDE_ITEMS["text"]) {
+		}
+	}	
+	
+	if_return = true
+	for (text of EXLUDE_ITEMS["text"]) {
+		if (text["active"] == true){
 			//console.log(url_site , "###" , text , "###", url_site.indexOf(text))
-			if (url_site.indexOf(text) >= 0){
+			if (url_site.indexOf(text["string"]) >= 0){
 				return true;
 			} 
 			else {if_return = false;}
 		}
-		if (if_return == true){
-			return true;
-		} 
-		else {return false;}
+	}
+	if (if_return == true){
+		return true;
 	} 
 	else {
-		return true;
-	}
-	
+		return false;
+	}	
 }
 
 function StorageChange(){
 	//console.log("New Storgae")
 	gettingItem = browser.storage.local.get();
 	gettingItem.then(function (item){
-	EXLUDE_ITEMS = item
-})
+		EXLUDE_ITEMS = item
+	})
 }
 
 function onSubWindowError(){
@@ -254,6 +252,7 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 		//console.log(WEBREQUEST_DATA[value])
 		string += WEBREQUEST_DATA[value]["method"] + ":"
 		string += WEBREQUEST_DATA[value]["url"] + "\r\n"
+		console.log(WEBREQUEST_DATA[value])
 		if (WEBREQUEST_DATA[value]["requestHeaders"] != undefined){
 			for (data of WEBREQUEST_DATA[value]["requestHeaders"]){
 				string += data["name"] + ":" + data["value"] + "\r\n"
@@ -264,11 +263,10 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 			for (data in WEBREQUEST_DATA[value]["requestBody"]["formData"]){
 				string2 += data +"="+WEBREQUEST_DATA[value]["requestBody"]["formData"][data][0] + "&"
 			}
-			string2 = string2.substr(0, string2.length-1)
-			
+			string2 = string2.substr(0, string2.length-1) + "\r\n"
 		}
-		string += string2 + "\r\n\r\n"
-		if (WEBREQUEST_DATA[value]["responseHeaders"] !== null){
+		string += string2 + "\r\n"
+		if (WEBREQUEST_DATA[value]["responseHeaders"] !== undefined){
 			for (data of WEBREQUEST_DATA[value]["responseHeaders"]){
 				string += data["name"] + ":" + data["value"] + "\r\n"
 			}	
@@ -278,4 +276,4 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 	document.getElementById("savefilehref").href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(string)
 	document.getElementById("savefilehref").download = "HTTPHeaderLive.txt"
 }
-)																																											
+)																																																				
