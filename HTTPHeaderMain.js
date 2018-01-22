@@ -42,7 +42,7 @@ function setdata_webRequest(e) {
 				if (e.requestId.indexOf("fakeRequest") >= 0){
 					return;
 				}
-				console.log(e)
+				//console.log(e)
 				if (e.requestBody !== undefined){
 					i = 1;
 					while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
