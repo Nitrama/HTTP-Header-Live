@@ -21,12 +21,28 @@ setdata_webRequest,
 {urls: ["<all_urls>"]},
 ["responseHeaders"]
 );	
+browser.webRequest.onErrorOccurred.addListener(
+function (test) {test["typ"] = "onErrorOccurred"; setdata_webRequest(test)},
+{urls: ["<all_urls>"]}
+);
+browser.webRequest.onBeforeRedirect.addListener(
+function (test) {test["typ"] = "onBeforeRedirect"; setdata_webRequest(test)},
+{urls: ["<all_urls>"]}
+);
+browser.webRequest.onCompleted.addListener(
+function (test) {test["typ"] = "onCompleted"; setdata_webRequest(test)},
+{urls: ["<all_urls>"]}
+);
+
 
 function setdata_webRequest(e) {
 	if (document.getElementById("capture_checkbox").checked == true){
-		//console.log(e)
 		if (not_on_exlude_list(e.url)){
 			if (e.requestId in WEBREQUEST_DATA){
+				if (e.requestId.indexOf("fakeRequest") >= 0){
+					return;
+				}
+				console.log(e)
 				if (e.requestBody !== undefined){
 					i = 1;
 					while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
@@ -70,6 +86,59 @@ function setdata_webRequest(e) {
 						}
 						id = e.requestId + "-" + i
 					}
+				}
+				else if (e.typ == "onErrorOccurred"){
+					id = e.requestId
+					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId]["statusLine"] = "error:" + e.error
+					}
+					else {
+						i = 1;
+						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  "error:" + e.error
+								break;
+							}
+							i++;
+						}
+						id = e.requestId + "-" + i
+					}
+					set_data_html(id)
+				}
+				else if (e.typ == "onBeforeRedirect"){
+					id = e.requestId
+					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId]["statusLine"] = e.method + " " + e.statusLine
+					}
+					else {
+						i = 1;
+						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] = e.method + " " + e.statusLine
+								break;
+							}
+							i++;
+						}
+						id = e.requestId + "-" + i
+					}
+					set_data_html(id)
+				}
+				else if (e.typ == "onCompleted"){
+					id = e.requestId
+					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId]["statusLine"] = e.method + " " + e.statusLine
+					}
+					else {
+						i = 1;
+						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  e.method + " " + e.statusLine
+								break;
+							}
+							i++;
+						}
+						id = e.requestId + "-" + i
+					}
 					set_data_html(id)
 				}
 			}
@@ -100,6 +169,10 @@ function set_data_html (ID){
 	
 	header_url.textContent = decodeURI(WEBREQUEST_DATA[ID].url)
 	newheader.appendChild (header_url)
+	header_pre = document.createElement("pre");
+	string = WEBREQUEST_DATA[ID]["statusLine"] + "\r\n"
+	header_pre.textContent = string
+	newheader.appendChild (header_pre)
 	if (WEBREQUEST_DATA[ID].requestHeaders !== undefined){
 		string = ""
 		header_pre = document.createElement("pre");
@@ -143,8 +216,8 @@ function set_data_html (ID){
 function clicked_data(e, requestID){
 	//console.log(e)
 	windowscreate = browser.windows.create({
-		height:610,
-		width:610,
+		height:600,
+		width:600,
 		type:"popup",
 		url:browser.extension.getURL("HTTPHeaderSub.html")
 	})
@@ -252,7 +325,6 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 		//console.log(WEBREQUEST_DATA[value])
 		string += WEBREQUEST_DATA[value]["method"] + ":"
 		string += WEBREQUEST_DATA[value]["url"] + "\r\n"
-		console.log(WEBREQUEST_DATA[value])
 		if (WEBREQUEST_DATA[value]["requestHeaders"] != undefined){
 			for (data of WEBREQUEST_DATA[value]["requestHeaders"]){
 				string += data["name"] + ":" + data["value"] + "\r\n"
@@ -276,4 +348,4 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 	document.getElementById("savefilehref").href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(string)
 	document.getElementById("savefilehref").download = "HTTPHeaderLive.txt"
 }
-)																																																				
+)																																																																																
