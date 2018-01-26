@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"developer": {
 		"name": "Martin Antrag",
 		"url":"https://github.com/Nitrama/HTTP-Header-Live/"

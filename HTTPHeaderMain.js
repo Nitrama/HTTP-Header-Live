@@ -325,17 +325,19 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 		//console.log(WEBREQUEST_DATA[value])
 		string += WEBREQUEST_DATA[value]["method"] + ":"
 		string += WEBREQUEST_DATA[value]["url"] + "\r\n"
-		if (WEBREQUEST_DATA[value]["requestHeaders"] != undefined){
+		if (WEBREQUEST_DATA[value]["requestHeaders"] !== undefined){
 			for (data of WEBREQUEST_DATA[value]["requestHeaders"]){
 				string += data["name"] + ":" + data["value"] + "\r\n"
 			}	
 		}
 		string2= "\r\n"
 		if (WEBREQUEST_DATA[value]["requestBody"] !== null){
-			for (data in WEBREQUEST_DATA[value]["requestBody"]["formData"]){
-				string2 += data +"="+WEBREQUEST_DATA[value]["requestBody"]["formData"][data][0] + "&"
+			if (WEBREQUEST_DATA[value]["requestBody"] !== undefined){
+				for (data in WEBREQUEST_DATA[value]["requestBody"]["formData"]){
+					string2 += data +"="+WEBREQUEST_DATA[value]["requestBody"]["formData"][data][0] + "&"
+				}
+				string2 = string2.substr(0, string2.length-1) + "\r\n"
 			}
-			string2 = string2.substr(0, string2.length-1) + "\r\n"
 		}
 		string += string2 + "\r\n"
 		if (WEBREQUEST_DATA[value]["responseHeaders"] !== undefined){
