@@ -14,7 +14,6 @@ function adding_to_select (id , items , storageid){
 	//console.log("test")
 	var x = document.getElementById(id);
 	LAST_SELECT[storageid] = ""
-	//console.log(items)
 	for (item in items) {
 		var li = document.createElement("li");
 		var label = document.createElement("label");
@@ -47,13 +46,18 @@ function new_string (id, storageid){
 	string = document.getElementById(id).value;
 	document.getElementById(id).value = "";
 	if (string != ""){
+		split = string.split(",")
 		gettingItem = browser.storage.local.get(storageid);
 		gettingItem.then(function (item){
-			item[storageid].push({"active":true, "string":string})
-			browser.storage.local.set({[storageid]: item[storageid]})
-			clear_select()
-		}
-		, onError);
+			for (i of split){
+				//console.log(i)
+				if (i != ""){
+					item[storageid].push({"active":true, "string":i})	
+				}
+			}
+			settingItem = browser.storage.local.set({[storageid]: item[storageid]})
+			settingItem.then(clear_select, onError);
+		}, onError);
 	}
 }
 
@@ -63,20 +67,20 @@ function delete_item_from_storage(storageid){
 		gettingItem.then(function (item){
 			item[storageid].splice(LAST_SELECT[storageid] , 1)
 			browser.storage.local.set({[storageid]: item[storageid]})
-			clear_select()
+		clear_select()
 		}, onError);
 	}
 }
 
 function deactivate_all (storageid){
-	gettingItem = browser.storage.local.get([storageid]);
-	gettingItem.then(function (items){
-		for (item in items[storageid]) {
-			items[storageid][item]["active"] = false;
-		}
-		browser.storage.local.set({[storageid]: items[storageid]})	
-		clear_select()
-	}, onError);
+gettingItem = browser.storage.local.get([storageid]);
+gettingItem.then(function (items){
+	for (item in items[storageid]) {
+		items[storageid][item]["active"] = false;
+	}
+	browser.storage.local.set({[storageid]: items[storageid]})	
+	clear_select()
+}, onError);
 }
 function activate_all (storageid){
 	gettingItem = browser.storage.local.get([storageid]);
@@ -96,6 +100,7 @@ function clear_select(){
 	gettingItem = browser.storage.local.get();
 	gettingItem.then(onGot, onError);
 }
+
 function checkbox_change(storageid , item){
 	
 	gettingItem = browser.storage.local.get([storageid]);
@@ -105,6 +110,35 @@ function checkbox_change(storageid , item){
 		} else{items[storageid][item]["active"] = true}
 		browser.storage.local.set({[storageid]: items[storageid]})
 	}, onError);
+}
+
+function load_backup(){
+	f = document.getElementById("input_load_backup").files[0];
+	//console.log(f)
+	var reader = new FileReader();
+	reader.onload = (function (e){
+		try {
+			json = JSON.parse(e.target.result);
+			} catch(e) {
+			alert("Error: Backup not Load\r\n" + e); 
+		}
+		if (typeof (json) != "undefined"){
+			browser.storage.local.set(json)
+		}
+		clear_select()
+	});
+	reader.readAsText(f);
+}
+
+function save_backup (){
+	getbackup = browser.storage.local.get()
+	getbackup.then(function (item){
+		blob = new Blob([JSON.stringify(item)], {type : 'data:text/plain;charset=utf-8'});
+		objectURL = URL.createObjectURL(blob);
+		var downloading = browser.downloads.download({
+			url : objectURL,
+			filename : "HTTPHeaderLive_Backup.txt"	
+		})}, onError);		
 }
 
 function checkbox_change_new_tab (){
@@ -119,6 +153,7 @@ function checkbox_change_new_tab (){
 function onError(error) {
 	console.error(`Error: ${error}`);
 }
+
 document.getElementById("button_activate_url").onclick = function (){activate_all("urls")};
 document.getElementById("button_deactivate_url").onclick = function (){deactivate_all("urls")};
 document.getElementById("button_activate_file").onclick = function (){activate_all("files")};
@@ -130,5 +165,7 @@ document.getElementById("button_delete_file").onclick = function (){delete_item_
 document.getElementById("button_delete_text").onclick = function (){delete_item_from_storage("text")};	
 document.getElementById("button_new_url").onclick = function (){new_string("input_new_url", "urls")};
 document.getElementById("button_new_file").onclick = function (){new_string("input_new_file", "files")};			
-document.getElementById("button_new_text").onclick = function (){new_string("input_new_text", "text")};		
+document.getElementById("button_new_text").onclick = function (){new_string("input_new_text", "text")};
 document.getElementById("newtab_checkbox").onchange = checkbox_change_new_tab;	
+document.getElementById("load_backup").onclick = load_backup;	
+document.getElementById("save_backup").onclick = save_backup;					

@@ -213,6 +213,7 @@ function set_data_html (ID){
 		document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight - document.getElementById("textarea").clientHeight;
 	}
 }
+
 function clicked_data(e, requestID){
 	//console.log(e)
 	windowscreate = browser.windows.create({
@@ -223,12 +224,14 @@ function clicked_data(e, requestID){
 	})
 	windowscreate.then(function (windowscreate) {onSubWindowCreated(windowscreate , requestID)}, onSubWindowError);
 }
+
 function onSubWindowCreated(windowscreate ,requestID){
 	//console.log("windowscreate:" , windowscreate.tabs[0].id);
 	TAB_ID = windowscreate.tabs[0].id
 	REQUESTID = requestID
 	browser.tabs.onUpdated.addListener(info_tabs)
 }
+
 function info_tabs(info_tab , test , tab) {
 	//console.log(tab , ":" , info_tab)
 	if (tab.status == "complete" && info_tab == TAB_ID){
@@ -236,10 +239,8 @@ function info_tabs(info_tab , test , tab) {
 		on_tab_complete(TAB_ID , REQUESTID)
 	}
 }
+
 function on_tab_complete (tab_id , requestID){
-	//console.log("on_tab_complete")
-	//console.log(tab_id)
-	////console.log(document.getElementById('data_' + SUB_ID).innerHTML)
 	tab_send = browser.tabs.sendMessage(
 	tab_id ,
 	{data:WEBREQUEST_DATA[requestID]}
@@ -253,6 +254,7 @@ function on_tab_complete (tab_id , requestID){
 	}
 	);
 }	
+
 function not_on_exlude_list (url_site){
 	request_url = new URL(url_site)
 	//console.log(url)
@@ -305,26 +307,13 @@ function StorageChange(){
 	})
 }
 
-function onSubWindowError(){
-	console.error('Windows Error');
-}
-function tab_sendError(error) {
-	console.error(`tab_sendError: ${error}`);
-} 
-function onError(error) {
-	console.error(`Error: ${error}`);
-}
-
-
-browser.storage.onChanged.addListener(StorageChange);
-document.getElementById("clearbutton").addEventListener("click" , function (){document.getElementById("textarea").innerHTML = "" ; WEBREQUEST_DATA = [];})
-document.getElementById("optionsbutton").addEventListener ("click" , function (){browser.runtime.openOptionsPage()})
-document.getElementById("savefilehref").addEventListener ("click" , function (){
+function save_file(){
 	string = ""
 	for (value in WEBREQUEST_DATA){
 		//console.log(WEBREQUEST_DATA[value])
-		string += WEBREQUEST_DATA[value]["method"] + ":"
+		
 		string += WEBREQUEST_DATA[value]["url"] + "\r\n"
+		string += WEBREQUEST_DATA[value]["statusLine"] + "\r\n"
 		if (WEBREQUEST_DATA[value]["requestHeaders"] !== undefined){
 			for (data of WEBREQUEST_DATA[value]["requestHeaders"]){
 				string += data["name"] + ":" + data["value"] + "\r\n"
@@ -346,8 +335,29 @@ document.getElementById("savefilehref").addEventListener ("click" , function (){
 			}	
 		}
 		string += "\r\n-----------------------\r\n\r\n"	
+		
 	}
-	document.getElementById("savefilehref").href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(string)
-	document.getElementById("savefilehref").download = "HTTPHeaderLive.txt"
+	blob = new Blob([string], {type : 'data:text/plain;charset=utf-8'});
+	objectURL = URL.createObjectURL(blob);
+	var downloading = browser.downloads.download({
+		url : objectURL,
+		filename : "HTTPHeaderLive.txt"	
+	})
 }
-)																																																																																
+
+function onSubWindowError(){
+	console.error('Windows Error');
+}
+
+function tab_sendError(error) {
+	console.error(`tab_sendError: ${error}`);
+} 
+
+function onError(error) {
+	console.error(`Error: ${error}`);
+}
+
+browser.storage.onChanged.addListener(StorageChange);
+document.getElementById("clearbutton").addEventListener("click" , function (){document.getElementById("textarea").innerHTML = "" ; WEBREQUEST_DATA = [];})
+document.getElementById("optionsbutton").addEventListener ("click" , function (){browser.runtime.openOptionsPage()})
+document.getElementById("save_file").addEventListener ("click" , save_file)

@@ -8,8 +8,12 @@
 	
 	<body>
 		<div>
+			<label id="newtab_label"><input type="checkbox" id="newtab_checkbox">Open Resend in new Tab</label>
+		</div>
+		<div><br></div>
+		<div>
 			<div>
-				<Label class="big">Exlude URLs</Label>
+				<label class="big">Exlude URLs</label>
 			</div>
 			<div class="select">
 				<ul id="exclude_url">
@@ -21,14 +25,14 @@
 				<button id="button_delete_url">Delete Selected</button>
 			</div>
 			<div>
-				<label>Add New URL:</label><input placeholder="facebook.com" id="input_new_url"></input><button id="button_new_url">OK</button>
+				<label>Add New URL:</label><input placeholder="url,url,url" id="input_new_url"></input><button id="button_new_url">OK</button>
 			</div>
 			
 		</div>
 		<div><br></div>
 		<div>
 			<div>
-				<Label class="big">Exlude file extension</Label>
+				<label class="big">Exlude file extension</label>
 			</div>
 			<div>
 				<div class="select">
@@ -42,13 +46,13 @@
 				<button id="button_delete_file">Delete Selected</button>
 			</div>
 			<div>
-				<label>Add New File extension:</label><input placeholder=".jpg" id="input_new_file"></input><button id="button_new_file">OK</button>
+				<label>Add New File extension:</label><input placeholder=".jpg,.bmp,.css" id="input_new_file"></input><button id="button_new_file">OK</button>
 			</div>
-			<div><br></div>
 		</div>
+		<div><br></div>
 		<div>
 			<div>
-				<Label class="big">Include Text in URL</Label>
+				<label class="big">Include Text in URL</label>
 			</div>
 			<div>
 				<div class="select">
@@ -64,12 +68,17 @@
 			<div>
 				<label>Add New Text:</label><input placeholder="test_text" id="input_new_text"></input><button id="button_new_text">OK</button>
 			</div>
-		</div><div><br></div>
-		<div>
-			<label id="newtab_label"><input type="checkbox" id="newtab_checkbox">Open Resend in new Tab</label>
 		</div>
-	</div>
-	<script src="updateStorage.js" ></script>
-	<script src="options.js" ></script>
-</body>
-</html>													
+		<div><br></div>
+		<div>
+			<div>
+				<label class="big">Backup</label>
+			</div>
+			<button id="save_backup">Save Backup</button><br>
+			<input id="input_load_backup" type="file"><button id="load_backup">Load Backup</button>
+			
+		</div>
+		<script src="updateStorage.js" ></script>
+		<script src="options.js" ></script>
+	</body>
+</html>														

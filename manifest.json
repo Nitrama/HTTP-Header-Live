@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "HTTP Header Live",
-	"version": "0.4.2",
+	"version": "0.5",
 	"developer": {
 		"name": "Martin Antrag",
 		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
@@ -19,6 +19,7 @@
 		"webRequest",
 		"webRequestBlocking",
 		"tabs",
+		"downloads",
 		"<all_urls>"
 	],
 	
