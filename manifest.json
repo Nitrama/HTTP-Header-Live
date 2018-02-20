@@ -31,8 +31,12 @@
 			"32": "icons/icon_neu.svg",
 			"38": "icons/icon_neu.svg",
 			"64": "icons/icon_neu.svg"
-			
 		}
+	},
+	"sidebar_action": {
+	"default_icon": "icons/icon_neu.svg",
+	"default_title" : "HTTP Header Live",
+	"default_panel": "HTTPHeaderMain.html"
 	},
 	"background": {
 		"scripts": ["background.js"]
