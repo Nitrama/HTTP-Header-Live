@@ -1,155 +1,105 @@
 ﻿//console.log("mööööööööööööp")
-var EXLUDE_ITEMS = ""
-var WEBREQUEST_DATA = []
+var EXLUDE_ITEMS = {}
+var WEBREQUEST_DATA = {}
 var TAB_ID = ""
 var REQUESTID
 
 StorageChange()
 
-browser.webRequest.onBeforeRequest.addListener(
-setdata_webRequest,
+chrome.webRequest.onBeforeRequest.addListener(
+function (test) {test["typ"] = "onBeforeRequest"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]},
 ["requestBody"]
 );
-browser.webRequest.onBeforeSendHeaders.addListener(
-setdata_webRequest,
+chrome.webRequest.onBeforeSendHeaders.addListener(
+function (test) {test["typ"] = "onBeforeSendHeaders"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]},
 ["requestHeaders"]
 );	
-browser.webRequest.onHeadersReceived.addListener(
-setdata_webRequest,
+chrome.webRequest.onHeadersReceived.addListener(
+function (test) {test["typ"] = "onHeadersReceived"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]},
 ["responseHeaders"]
 );	
-browser.webRequest.onErrorOccurred.addListener(
+chrome.webRequest.onErrorOccurred.addListener(
 function (test) {test["typ"] = "onErrorOccurred"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]}
 );
-browser.webRequest.onBeforeRedirect.addListener(
+chrome.webRequest.onBeforeRedirect.addListener(
 function (test) {test["typ"] = "onBeforeRedirect"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]}
 );
-browser.webRequest.onCompleted.addListener(
+chrome.webRequest.onCompleted.addListener(
 function (test) {test["typ"] = "onCompleted"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]}
 );
 
-
 function setdata_webRequest(e) {
 	if (document.getElementById("capture_checkbox").checked == true){
 		if (not_on_exlude_list(e.url)){
-			if (e.requestId in WEBREQUEST_DATA){
-				if (e.requestId.indexOf("fakeRequest") >= 0){
-					return;
+			//console.log(e)
+			if (e.requestId.indexOf("fakeRequest") >= 0){
+				return;
+			}
+			i = 1;
+			if (e.typ == "onBeforeRequest"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					i++;
 				}
-				//console.log(e)
-				if (e.requestBody !== undefined){
-					i = 1;
-					while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-						i++;
+				WEBREQUEST_DATA[e.requestId + "-" + i] = {}
+				WEBREQUEST_DATA[e.requestId + "-" + i].url = e.url
+				WEBREQUEST_DATA[e.requestId + "-" + i].originUrl = e.originUrl
+				WEBREQUEST_DATA[e.requestId + "-" + i].method = e.method
+				WEBREQUEST_DATA[e.requestId + "-" + i].tabId = e.tabId
+				WEBREQUEST_DATA[e.requestId + "-" + i].requestBody = e.requestBody
+			}
+			else if (e.typ == "onBeforeSendHeaders"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i].requestHeaders == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i].requestHeaders = e.requestHeaders;
+						break;
 					}
-					WEBREQUEST_DATA[e.requestId + "-" + i] = []
-					WEBREQUEST_DATA[e.requestId + "-" + i].url = e.url
-					WEBREQUEST_DATA[e.requestId + "-" + i].originUrl = e.originUrl
-					WEBREQUEST_DATA[e.requestId + "-" + i].method = e.method
-					WEBREQUEST_DATA[e.requestId + "-" + i].tabId = e.tabId
-					WEBREQUEST_DATA[e.requestId + "-" + i].requestBody = e.requestBody
-				}
-				else if (e.requestHeaders !== undefined) {
-					if (WEBREQUEST_DATA[e.requestId].requestHeaders == undefined){
-						WEBREQUEST_DATA[e.requestId].requestHeaders = e.requestHeaders
+					i++;
+				}	
+			}
+			else if (e.typ == "onHeadersReceived"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders = e.responseHeaders;
+						break;
 					}
-					else {
-						i = 1;
-						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-							if (WEBREQUEST_DATA[e.requestId + "-" + i].requestHeaders == undefined){
-								WEBREQUEST_DATA[e.requestId + "-" + i].requestHeaders = e.requestHeaders;
-								break;
-							}
-							i++;
-						}
-					}
-				}
-				else if (e.responseHeaders !== undefined ){
-					id = e.requestId
-					if (WEBREQUEST_DATA[e.requestId].responseHeaders == undefined){
-						WEBREQUEST_DATA[e.requestId].responseHeaders = e.responseHeaders
-					}
-					else {
-						i = 1;
-						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-							if (WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders == undefined){
-								WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders = e.responseHeaders;
-								break;
-							}
-							i++;
-						}
-						id = e.requestId + "-" + i
-					}
-				}
-				else if (e.typ == "onErrorOccurred"){
-					id = e.requestId
-					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
-						WEBREQUEST_DATA[e.requestId]["statusLine"] = "error:" + e.error
-					}
-					else {
-						i = 1;
-						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
-								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  "error:" + e.error
-								break;
-							}
-							i++;
-						}
-						id = e.requestId + "-" + i
-					}
-					set_data_html(id)
-				}
-				else if (e.typ == "onBeforeRedirect"){
-					id = e.requestId
-					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
-						WEBREQUEST_DATA[e.requestId]["statusLine"] = e.method + " " + e.statusLine
-					}
-					else {
-						i = 1;
-						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
-								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] = e.method + " " + e.statusLine
-								break;
-							}
-							i++;
-						}
-						id = e.requestId + "-" + i
-					}
-					set_data_html(id)
-				}
-				else if (e.typ == "onCompleted"){
-					id = e.requestId
-					if (WEBREQUEST_DATA[e.requestId]["statusLine"] == undefined){
-						WEBREQUEST_DATA[e.requestId]["statusLine"] = e.method + " " + e.statusLine
-					}
-					else {
-						i = 1;
-						while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
-							if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
-								WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  e.method + " " + e.statusLine
-								break;
-							}
-							i++;
-						}
-						id = e.requestId + "-" + i
-					}
-					set_data_html(id)
+					i++;
 				}
 			}
-			else{
-				WEBREQUEST_DATA[e.requestId] = []
-				WEBREQUEST_DATA[e.requestId].url = e.url
-				WEBREQUEST_DATA[e.requestId].originUrl = e.originUrl
-				WEBREQUEST_DATA[e.requestId].method = e.method
-				WEBREQUEST_DATA[e.requestId].tabId = e.tabId
-				WEBREQUEST_DATA[e.requestId].requestBody = e.requestBody
-				
+			else if (e.typ == "onErrorOccurred"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  "error:" + e.error
+						break;
+					}
+					i++;
+				}
+				set_data_html(e.requestId + "-" + i)
+			}
+			else if (e.typ == "onBeforeRedirect"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] = e.method + " " + e.statusLine
+						break;
+					}
+					i++;
+				}				
+				set_data_html(e.requestId + "-" + i)
+			}
+			else if (e.typ == "onCompleted"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i]["statusLine"] =  e.method + " " + e.statusLine
+						break;
+					}
+					i++;
+				}
+				set_data_html(e.requestId + "-" + i)
 			}
 		}
 	}
@@ -216,43 +166,42 @@ function set_data_html (ID){
 
 function clicked_data(e, requestID){
 	//console.log(e)
-	windowscreate = browser.windows.create({
+	windowscreate = chrome.windows.create({
 		height:600,
 		width:600,
 		type:"popup",
-		url:browser.extension.getURL("HTTPHeaderSub.html")
-	})
-	windowscreate.then(function (windowscreate) {onSubWindowCreated(windowscreate , requestID)}, onSubWindowError);
+		url:chrome.extension.getURL("HTTPHeaderSub.html")
+	} , function (windowscreate){onSubWindowCreated(windowscreate , requestID)})
+	
 }
 
 function onSubWindowCreated(windowscreate ,requestID){
+	//console.log(windowscreate  ,"#",requestID)
 	//console.log("windowscreate:" , windowscreate.tabs[0].id);
 	TAB_ID = windowscreate.tabs[0].id
 	REQUESTID = requestID
-	browser.tabs.onUpdated.addListener(info_tabs)
+	chrome.tabs.onUpdated.addListener(info_tabs)
 }
 
 function info_tabs(info_tab , test , tab) {
 	//console.log(tab , ":" , info_tab)
-	if (tab.status == "complete" && info_tab == TAB_ID){
-		browser.tabs.onUpdated.removeListener(info_tabs)
+	if (tab.status == "complete" && info_tab == TAB_ID && tab.title == "HTTP Header Live Sub"){
+		//console.log(info_tab , test , tab)
+		//chrome.tabs.onUpdated.removeListener(info_tabs)
 		on_tab_complete(TAB_ID , REQUESTID)
 	}
 }
 
 function on_tab_complete (tab_id , requestID){
-	tab_send = browser.tabs.sendMessage(
+	//console.log(tab_id , requestID,WEBREQUEST_DATA[requestID])
+	tab_send = chrome.tabs.sendMessage(
 	tab_id ,
-	{data:WEBREQUEST_DATA[requestID]}
-	)
-	tab_send.then(function (){
-		null
-	},
-	function (error) {
-		//console.error(`Error: ${error}`);
-		on_tab_complete (tab_id , requestID)
+	{data:WEBREQUEST_DATA[requestID]},function (){ 
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		}
 	}
-	);
+	)
 }	
 
 function not_on_exlude_list (url_site){
@@ -300,10 +249,9 @@ function not_on_exlude_list (url_site){
 }
 
 function StorageChange(){
-	//console.log("New Storgae")
-	gettingItem = browser.storage.local.get();
-	gettingItem.then(function (item){
-		EXLUDE_ITEMS = item
+	chrome.storage.local.get(function(items){
+	//console.log(items)
+		EXLUDE_ITEMS = items
 	})
 }
 
@@ -311,7 +259,6 @@ function save_file(){
 	string = ""
 	for (value in WEBREQUEST_DATA){
 		//console.log(WEBREQUEST_DATA[value])
-		
 		string += WEBREQUEST_DATA[value]["url"] + "\r\n"
 		string += WEBREQUEST_DATA[value]["statusLine"] + "\r\n"
 		if (WEBREQUEST_DATA[value]["requestHeaders"] !== undefined){
@@ -339,7 +286,7 @@ function save_file(){
 	}
 	blob = new Blob([string], {type : 'data:text/plain;charset=utf-8'});
 	objectURL = URL.createObjectURL(blob);
-	var downloading = browser.downloads.download({
+	var downloading = chrome.downloads.download({
 		url : objectURL,
 		filename : "HTTPHeaderLive.txt"	
 	})
@@ -357,7 +304,7 @@ function onError(error) {
 	console.error(`Error: ${error}`);
 }
 
-browser.storage.onChanged.addListener(StorageChange);
-document.getElementById("clearbutton").addEventListener("click" , function (){document.getElementById("textarea").innerHTML = "" ; WEBREQUEST_DATA = [];})
-document.getElementById("optionsbutton").addEventListener ("click" , function (){browser.runtime.openOptionsPage()})
-document.getElementById("save_file").addEventListener ("click" , save_file)
+chrome.storage.onChanged.addListener(StorageChange);
+document.getElementById("clear_button").addEventListener("click" , function (){document.getElementById("textarea").innerHTML = "" ; WEBREQUEST_DATA = [];})
+document.getElementById("options_button").addEventListener ("click" , function (){chrome.runtime.openOptionsPage()})
+document.getElementById("save_file_button").addEventListener ("click" , save_file)

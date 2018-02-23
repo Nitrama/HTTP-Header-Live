@@ -7,8 +7,9 @@ body {
 	font-weight:bold;	
 }
 
-::-moz-placeholder { /* Firefox 19+ */
+::placeholder {
 	color: LightGray ;
+	opacity:50%;
 }
 
 .select {

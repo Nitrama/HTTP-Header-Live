@@ -1,17 +1,10 @@
+﻿
 function NewWindow() {
-	windowscreate = browser.windows.create({
+	windowscreate = chrome.windows.create({
 		height:600,
 		width:600,
 		type:"popup",
-		url:browser.extension.getURL("HTTPHeaderMain.html")
+		url:chrome.extension.getURL("HTTPHeaderMain.html")
 	});
-	windowscreate.then(onSubWindowCreated, onSubWindowError);
 }
-
-function onSubWindowError(){
-	console.error('Windows Error');
-}
-function onSubWindowCreated(){
-	//console.log("Windows created")
-}
-browser.browserAction.onClicked.addListener(NewWindow);	
+chrome.browserAction.onClicked.addListener(NewWindow);	

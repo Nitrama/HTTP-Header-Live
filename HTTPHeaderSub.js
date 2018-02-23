@@ -1,10 +1,10 @@
-﻿TAB_ID = ""
-LASTET_TAB = false
-RESEND_TAB_NEW = "";
+﻿var TAB_ID = ""
+var RESENDED_TAB = false
+var RESEND_TAB_NEW = "";
 StorageChange()
 //console.log("muuup")
 function notify(request) {
-	//console.log(request.data.method)
+	//console.log(request)
 	document.getElementById("select_method").value = request.data.method;
 	document.getElementById("header_url").value = request.data.url;
 	TAB_ID  = request.data.tabId
@@ -23,7 +23,7 @@ function notify(request) {
 		}
 		string = string.substr(0, string.length-1)
 		document.getElementById("post_data").textContent = string;
-		document.getElementById("content_length").textContent = "Content-Length:" + document.getElementById("post_data").textContent.length
+		document.getElementById("content_length_label").textContent = chrome.i18n.getMessage("content_length_label") + string.length
 	}
 	
 }
@@ -46,7 +46,6 @@ function replay_send(){
 			myHeaders.append(split[0], split[1]);
 		}
 	}
-	
 	data = {  
 		"method": method
 	}
@@ -63,87 +62,72 @@ function replay_send(){
 	fetch(url , data)  
 	.then(  
 	function(response) {  
-		
-		response.blob().then(function(data) {  
-			//console.log(data);  
+		response.blob().then(function(data) {
 			objectURL = URL.createObjectURL(data);
-			//console.log(objectURL);  
-			//console.log("###",TAB_ID,"###")
-			
+			//console.log(objectURL);  		
 			if (RESEND_TAB_NEW == true){
-				if (LASTET_TAB == ""){
-					var getting = browser.windows.getAll({
-						windowTypes: ["normal"]
-					});
-					getting.then(function (get_windows){
-						//console.log(get_windows)
-						for (windows of get_windows) {
-							if (windows["type"] == "normal"){
-								var creating = browser.tabs.create({active:false, windowId : windows["id"]});
-								creating.then(function(tab){TAB_ID = tab.id , LASTET_TAB = true}, onError);
-								var gettingInfo = browser.tabs.get(TAB_ID );
-								gettingInfo.then(function (){on_get_tab(objectURL)}, on_get_tab_error);
-								break
-							}
-						}
-					}, onError);
+				if (RESENDED_TAB == true){
+					tab_exists(objectURL)
 				}
 				else {
-					var gettingInfo = browser.tabs.get(TAB_ID );
-					gettingInfo.then(function (){on_get_tab(objectURL)}, on_get_tab_error);
+					RESENDED_TAB = true
+					tab_create(objectURL)
 				}
 			}
-			else {
-				var gettingInfo = browser.tabs.get(TAB_ID );
-				gettingInfo.then(function (){on_get_tab(objectURL)}, on_get_tab_error);
+			else {	
+				tab_exists(objectURL)
 			}
-			
 		});  
-		}  
+	}  
 	)  
 	.catch(function(err) {  
 		console.error('Fetch Error:', err);  
 	});
 }
-
-function on_get_tab(bloburl) {
-	var updating = browser.tabs.update(TAB_ID , {url: bloburl});
-	updating.then(null, onError);
-} 
-
-function on_get_tab_error() {
-	var getting = browser.windows.getAll({
-		windowTypes: ["normal"]
-	});
+function tab_create (objectURL){
+	chrome.windows.getAll ({windowTypes:['normal']}, function (getwindows){
+		//console.log(getwindows)
+		for (windows of getwindows){
+			if (windows.type == "normal"){
+				WINDOW_ID = windows.id
+				break;
+			}
+		}
+		chrome.tabs.create({windowId : WINDOW_ID, url:objectURL} , function (tab){ 
+			if (chrome.runtime.lastError) {
+				onError(chrome.runtime.lastError)
+				} else{
+				TAB_ID = tab.id
+			}
+		})
+	})
 	
-	getting.then(windows, onError);
-	
-} 
-function windows(windowInfoArray) {
-	
-	var create = browser.tabs.create({windowId:windowInfoArray[0].id});
-	create.then(create_tab , onError);
 }
 
-function create_tab (info_tab){
-	TAB_ID = info_tab.id
-	replay_send()
+function tab_exists(objectURL){
+	chrome.tabs.get(TAB_ID , function (){ 
+		if (chrome.runtime.lastError) {
+			tab_create(objectURL)
+		} 
+		else {
+			chrome.tabs.update( TAB_ID , {url: objectURL} , function (){
+				//chrome.tabs.create({url: bloburl} , function (){ 
+				if (chrome.runtime.lastError) {
+					onError(chrome.runtime.lastError)
+				}
+			})
+		}
+	})
 }
-
 
 function StorageChange(){
-	//console.log("New Storgae")
-	gettingItem = browser.storage.local.get();
-	gettingItem.then(function (item){
-		EXLUDE_ITEMS = item
-		RESEND_TAB_NEW
-		if (item["new_tab_open"] !== undefined) {
-			if (item["new_tab_open"] == true){
-				RESEND_TAB_NEW = true;
-			} 
-			else {
-				RESEND_TAB_NEW = false;
-			}
+	//console.log("New Storage")
+	gettingItem = chrome.storage.local.get(function (item){
+		if (item["new_tab_open"] == true){
+			RESEND_TAB_NEW = true;
+		} 
+		else {
+			RESEND_TAB_NEW = false;
 		}
 	})
 }
@@ -151,9 +135,7 @@ function onError(error) {
 	console.error('Error:', error);
 	alert ('Error:'+ error)
 } 
-
-
-browser.runtime.onMessage.addListener(notify);	
-document.getElementById("replay_send").addEventListener ("click" , replay_send)
-document.getElementById("post_data").addEventListener("input", function() {document.getElementById("content_length").textContent = "Content-Length:" + document.getElementById("post_data").textContent.length});
-
+chrome.storage.onChanged.addListener(StorageChange);
+chrome.runtime.onMessage.addListener(notify);	
+document.getElementById("replay_send_button").addEventListener ("click" , replay_send)
+document.getElementById("post_data").addEventListener("input", function() {document.getElementById("content_length_label").textContent = chrome.i18n.getMessage("content_length_label") + document.getElementById("post_data").textContent.length});							

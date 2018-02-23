@@ -1,18 +1,17 @@
 {
 	"manifest_version": 2,
-	"name": "HTTP Header Live",
-	"version": "0.5.1",
-	"developer": {
-		"name": "Martin Antrag",
-		"url":"https://github.com/Nitrama/HTTP-Header-Live/"
-	},
+	"name": "__MSG_extensionName__",
+	"version": "0.6",
+	"author": "Martin Antrag",
+	"homepage_url":"https://github.com/Nitrama/HTTP-Header-Live/",
+	"default_locale": "en",
 	"options_ui": {
 		"page": "options.html"
 	},
 	"icons": {
 		"64": "icons/64.png"
 	},
-	"description": "Displays the HTTP header. Edit it and send it.",
+	"description": "__MSG_extensionDescription__",
 	"permissions": [
 		"storage",
 		"activeTab",
@@ -20,30 +19,27 @@
 		"webRequestBlocking",
 		"tabs",
 		"downloads",
+		"storage",
 		"<all_urls>"
 	],
-	
-	"browser_action": {
-		"default_title": "HTTP Header Live",
-		"default_icon": {
-			"16": "icons/icon_neu.svg",
-			"19": "icons/icon_neu.svg",
-			"32": "icons/icon_neu.svg",
-			"38": "icons/icon_neu.svg",
-			"64": "icons/icon_neu.svg"
-		}
-	},
 	"sidebar_action": {
-	"default_icon": "icons/icon_neu.svg",
-	"default_title" : "HTTP Header Live",
-	"default_panel": "HTTPHeaderMain.html"
+		"default_icon": "icons/icon_neu.svg",
+		"default_title" : "__MSG_extensionName__",
+		"default_panel": "HTTPHeaderMain.html"
+	},
+	"browser_action": {
+		"default_title": "__MSG_extensionName__",
+		"default_icon": {
+			"64": "icons/64.png"
+		}
 	},
 	"background": {
 		"scripts": ["background.js"]
 	},
 	"applications":{
 		"gecko":{
-			"id": "{ed102056-8b4f-43a9-99cd-6d1b25abe87e}" 
+			"id": "{ed102056-8b4f-43a9-99cd-6d1b25abe87e}",
+			"strict_min_version": "53.0"
 		}
 	}
 }	

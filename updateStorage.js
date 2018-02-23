@@ -1,16 +1,16 @@
-gettingItem = browser.storage.local.get();
-gettingItem.then(onGot, onError);
 VERSION = 1;
-function onGot(items) {
-	//console.log(items["version"])
-	if (items["version"] == undefined){
+chrome.storage.local.get(function(items){
+    //console.log(items)
+	if (items["version"] === undefined){
 		update_1 (items)
 	}
 	
-}
+})
 function update_1 (items){
+	//console.log(items)
+	items = {};
 	items["version"] = 1;
-	items["new_tab_open"] = false;
+	items["new_tab_open"] = true;
 	if (items["urls"] == undefined) {
 		items["urls"] = []
 	}
@@ -20,14 +20,7 @@ function update_1 (items){
 	if (items["text"] == undefined) {
 		items["text"] = []
 	}
-	for (item in items){
-		for (value in items[item]) {
-			string = items[item][value];
-			items[item][value] = {"active": true , "string": string}
-		}
-	}
-browser.storage.local.set(items)
-}
-function onError(error) {
-	console.error(`Error: ${error}`);
+	//console.log(items)
+	
+chrome.storage.local.set(items);
 }

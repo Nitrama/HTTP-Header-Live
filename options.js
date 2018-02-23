@@ -1,5 +1,12 @@
-gettingItem = browser.storage.local.get();
-gettingItem.then(onGot, onError);
+chrome.storage.local.get(function(items){
+	if (chrome.runtime.lastError) {
+		onError(chrome.runtime.lastError)
+	} 
+	else {
+		onGot(items)
+	}
+});
+
 var LAST_SELECT = {"urls": "" , "files" : "" , "text" : ""};
 function onGot(item) {
 	adding_to_select ("exclude_url" , item["urls"] , "urls")
@@ -47,69 +54,95 @@ function new_string (id, storageid){
 	document.getElementById(id).value = "";
 	if (string != ""){
 		split = string.split(",")
-		gettingItem = browser.storage.local.get(storageid);
-		gettingItem.then(function (item){
-			for (i of split){
-				//console.log(i)
-				if (i != ""){
-					item[storageid].push({"active":true, "string":i})	
+		chrome.storage.local.get(storageid,function (item){
+			if (chrome.runtime.lastError) {
+				onError(chrome.runtime.lastError)
+			} 
+			else {
+				for (i of split){
+					//console.log(i)
+					if (i != ""){
+						item[storageid].push({"active":true, "string":i})	
+					}
 				}
+				chrome.storage.local.set({[storageid]: item[storageid]})
+				clear_select()
 			}
-			settingItem = browser.storage.local.set({[storageid]: item[storageid]})
-			settingItem.then(clear_select, onError);
-		}, onError);
+		});
 	}
 }
 
 function delete_item_from_storage(storageid){
 	if (LAST_SELECT[storageid] !== ""){
-		gettingItem = browser.storage.local.get([storageid]);
-		gettingItem.then(function (item){
-			item[storageid].splice(LAST_SELECT[storageid] , 1)
-			browser.storage.local.set({[storageid]: item[storageid]})
-		clear_select()
-		}, onError);
+		chrome.storage.local.get([storageid],function (item){
+			if (chrome.runtime.lastError) {
+				onError(chrome.runtime.lastError)
+			} 
+			else {
+				item[storageid].splice(LAST_SELECT[storageid] , 1)
+				chrome.storage.local.set({[storageid]: item[storageid]})
+				clear_select()
+			}
+		});
 	}
 }
 
 function deactivate_all (storageid){
-gettingItem = browser.storage.local.get([storageid]);
-gettingItem.then(function (items){
-	for (item in items[storageid]) {
-		items[storageid][item]["active"] = false;
-	}
-	browser.storage.local.set({[storageid]: items[storageid]})	
-	clear_select()
-}, onError);
-}
-function activate_all (storageid){
-	gettingItem = browser.storage.local.get([storageid]);
-	gettingItem.then(function (items){
-		for (item in items[storageid]) {
-			items[storageid][item]["active"] = true;
+	chrome.storage.local.get([storageid], function (items){
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		} 
+		else {
+			for (item in items[storageid]) {
+				items[storageid][item]["active"] = false;
+			}
+			chrome.storage.local.set({[storageid]: items[storageid]})	
+			clear_select()
 		}
-		browser.storage.local.set({[storageid]: items[storageid]})	
-		clear_select()
-	}, onError);
+	});
+}
+
+function activate_all (storageid){
+	chrome.storage.local.get([storageid] , function (items){
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		} 
+		else {
+			for (item in items[storageid]) {
+				items[storageid][item]["active"] = true;
+			}
+			chrome.storage.local.set({[storageid]: items[storageid]})	
+			clear_select()
+		}
+	});
 }
 
 function clear_select(){
 	document.getElementById("exclude_url").textContent = "";
 	document.getElementById("exclude_file").textContent = "";
 	document.getElementById("include_text").textContent = "";
-	gettingItem = browser.storage.local.get();
-	gettingItem.then(onGot, onError);
+	chrome.storage.local.get(function(items){
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		} 
+		else {
+			onGot(items)
+		}
+	});
 }
 
 function checkbox_change(storageid , item){
-	
-	gettingItem = browser.storage.local.get([storageid]);
-	gettingItem.then(function (items){
-		if (items[storageid][item]["active"] == true){
-			items[storageid][item]["active"] = false
-		} else{items[storageid][item]["active"] = true}
-		browser.storage.local.set({[storageid]: items[storageid]})
-	}, onError);
+	chrome.storage.local.get([storageid] , function (items){
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		} 
+		else {
+			if (items[storageid][item]["active"] == true){
+				items[storageid][item]["active"] = false
+			} else{items[storageid][item]["active"] = true}
+			chrome.storage.local.set({[storageid]: items[storageid]})
+		}
+	});
 }
 
 function load_backup(){
@@ -123,7 +156,7 @@ function load_backup(){
 			alert("Error: Backup not Load\r\n" + e); 
 		}
 		if (typeof (json) != "undefined"){
-			browser.storage.local.set(json)
+			chrome.storage.local.set(json)
 		}
 		clear_select()
 	});
@@ -131,22 +164,27 @@ function load_backup(){
 }
 
 function save_backup (){
-	getbackup = browser.storage.local.get()
-	getbackup.then(function (item){
-		blob = new Blob([JSON.stringify(item)], {type : 'data:text/plain;charset=utf-8'});
-		objectURL = URL.createObjectURL(blob);
-		var downloading = browser.downloads.download({
-			url : objectURL,
-			filename : "HTTPHeaderLive_Backup.txt"	
-		})}, onError);		
+	getbackup = chrome.storage.local.get(	function (item){
+		if (chrome.runtime.lastError) {
+			onError(chrome.runtime.lastError)
+		} 
+		else {
+			blob = new Blob([JSON.stringify(item)], {type : 'data:text/plain;charset=utf-8'});
+			objectURL = URL.createObjectURL(blob);
+			var downloading = chrome.downloads.download({
+				url : objectURL,
+				filename : "HTTPHeaderLive_Backup.txt"	
+			})
+		}
+	})
 }
 
 function checkbox_change_new_tab (){
 	if (document.getElementById("newtab_checkbox").checked == true){
-		browser.storage.local.set({"new_tab_open": true})
+		chrome.storage.local.set({"new_tab_open": true})
 	} 
 	else{
-		browser.storage.local.set({"new_tab_open": false})
+		chrome.storage.local.set({"new_tab_open": false})
 	}
 }
 
@@ -168,4 +206,4 @@ document.getElementById("button_new_file").onclick = function (){new_string("inp
 document.getElementById("button_new_text").onclick = function (){new_string("input_new_text", "text")};
 document.getElementById("newtab_checkbox").onchange = checkbox_change_new_tab;	
 document.getElementById("load_backup").onclick = load_backup;	
-document.getElementById("save_backup").onclick = save_backup;					
+document.getElementById("save_backup").onclick = save_backup;											

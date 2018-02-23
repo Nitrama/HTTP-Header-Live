@@ -4,9 +4,8 @@ body{
 	height: 100vh;
 	margin: 0;
 	padding-bottom: 10px;
-
+	padding-left: 10px;
 	overflow: hidden;
-	
 	display: flex;
 	flex-direction: column;
 	font-family: Courier New;
@@ -16,11 +15,11 @@ body{
 	flex-grow: 1;
 	overflow: scroll;
 	border: 1px solid #000;
-	margin: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 0px;
 	white-space:nowrap;
 } 
 
-#clearbutton{
+#clear_button{
 	
 }
 
@@ -35,8 +34,7 @@ pre.big{
 	font-weight: bolder;
 }
 
-#buttons{
-	margin-left:10px;
+button{
 	margin-bottom:10px;
 }
 

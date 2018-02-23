@@ -55,10 +55,10 @@ pre {
 	
 }
 
-#replay_send{	
+#replay_send_button{	
 	float:left;
 }
-#content_length{
+#content_length_label{
 	float:none;
 	padding-top:3px;
 	margin-left:100px
