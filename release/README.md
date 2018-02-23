@@ -1,6 +1,9 @@
 # RELEASE
 new version Directly download from the Firefox Addon-manager: https://addons.mozilla.org/de/firefox/addon/http-header-live/
 <br />
+Version 0.6<br />
+----added: Support for language<br />
+<br />
 Version 0.5.1<br />
 ----added: sidebar from https://github.com/Nitrama/HTTP-Header-Live/issues/10<br />
 <br />
