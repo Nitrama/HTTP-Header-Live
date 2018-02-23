@@ -19,7 +19,6 @@
 		"webRequestBlocking",
 		"tabs",
 		"downloads",
-		"storage",
 		"<all_urls>"
 	],
 	"sidebar_action": {
