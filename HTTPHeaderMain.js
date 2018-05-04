@@ -21,6 +21,11 @@ function (test) {test["typ"] = "onHeadersReceived"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]},
 ["responseHeaders"]
 );	
+chrome.webRequest.onAuthRequired.addListener(
+function (test) {test["typ"] = "onAuthRequired"; setdata_webRequest(test)},
+{urls: ["<all_urls>"]},
+["responseHeaders"]
+);	
 chrome.webRequest.onErrorOccurred.addListener(
 function (test) {test["typ"] = "onErrorOccurred"; setdata_webRequest(test)},
 {urls: ["<all_urls>"]}
@@ -63,6 +68,15 @@ function setdata_webRequest(e) {
 				}	
 			}
 			else if (e.typ == "onHeadersReceived"){
+				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
+					if (WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders == undefined){
+						WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders = e.responseHeaders;
+						break;
+					}
+					i++;
+				}
+			}
+            else if (e.typ == "onAuthRequired"){
 				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
 					if (WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders == undefined){
 						WEBREQUEST_DATA[e.requestId + "-" + i].responseHeaders = e.responseHeaders;
