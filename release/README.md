@@ -2,6 +2,10 @@
 new version Directly download from the Firefox Addon-manager: https://addons.mozilla.org/de/firefox/addon/http-header-live/
 new version Directly download from the Chrome Web Store: https://chrome.google.com/webstore/detail/http-header-live/jljeikaiehipjcfbpedmgikbbhmknpkk
 <br />
+Version 0.6.2.1<br />
+----Fixed: HTTP Auth request<br />
+<br />
+<br />
 Version 0.6.1<br />
 ----added: HTTP Auth request<br />
 <br />
