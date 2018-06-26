@@ -41,10 +41,10 @@ function (test) {test["typ"] = "onErrorOccurred"; setdata_webRequest(test)},
 function setdata_webRequest(e) {
 	if (document.getElementById("capture_checkbox").checked == true){
 		if (not_on_exlude_list(e.url)){
-			//console.log(e)
 			if (e.requestId.indexOf("fakeRequest") >= 0){
 				return;
             }
+            //console.log(e)
 			i = 1;
 			if (e.typ == "onBeforeRequest"){
 				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
@@ -56,6 +56,7 @@ function setdata_webRequest(e) {
 				WEBREQUEST_DATA[e.requestId + "-" + i].method = e.method
 				WEBREQUEST_DATA[e.requestId + "-" + i].tabId = e.tabId
 				WEBREQUEST_DATA[e.requestId + "-" + i].requestBody = e.requestBody
+                
             }
 			else if (e.typ == "onSendHeaders"){
 				while ((e.requestId + "-" + i) in WEBREQUEST_DATA){
@@ -157,13 +158,19 @@ function set_data_html (ID){
 	newpost = document.createElement("pre");
 	newpost.id = 'post_' + ID
 	newpost.className = 'big'
-	if (WEBREQUEST_DATA[ID].requestBody != null){
-        string = ""
-        for (var i in WEBREQUEST_DATA[ID].requestBody.formData) {
-            string += i + "=" + WEBREQUEST_DATA[ID].requestBody.formData[i] + "&";
+    if (WEBREQUEST_DATA[ID].requestBody != null ){
+        if (WEBREQUEST_DATA[ID].requestBody.formData != undefined){
+            string = ""
+            for (var i in WEBREQUEST_DATA[ID].requestBody.formData) {
+                string += i + "=" + WEBREQUEST_DATA[ID].requestBody.formData[i] + "&";
+            }
+            string = string.substr(0, string.length-1)
+            newpost.textContent = string;
+        } 
+        else if (WEBREQUEST_DATA[ID].requestBody.raw != undefined){       
+            utf8decode = new TextDecoder('utf-8');
+            newpost.textContent = utf8decode.decode(WEBREQUEST_DATA[ID].requestBody.raw[0].bytes)
         }
-        string = string.substr(0, string.length-1)
-        newpost.textContent = string;
     }
 	newdata.appendChild(newpost)
     
