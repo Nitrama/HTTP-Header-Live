@@ -14,11 +14,10 @@ Is now also nice to read :-)
 
 ----Fixed: File Download Post data for XML Request<br />
 ----Fixed: undefined output on Console.log
-
 <br />
 Version 0.6.2.2<br />
-----Fixed: XML Request Post data not Show<br />
-<br />
+----Fixed: XML Request Post data not Show
+
 Version 0.6.2.1<br />
 ----Fixed: HTTP Auth request<br />
 <br />
