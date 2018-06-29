@@ -13,7 +13,7 @@ Script is a bit faster now
 Is now also nice to read :-)
 
 ----Fixed: File Download Post data for XML Request<br />
-----Fixed: undefined qoutput on Console.log
+----Fixed: undefined output on Console.log
 
 <br />
 Version 0.6.2.2<br />
