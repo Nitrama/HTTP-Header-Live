@@ -2,6 +2,28 @@
 new version Directly download from the Firefox Addon-manager: https://addons.mozilla.org/de/firefox/addon/http-header-live/
 new version Directly download from the Chrome Web Store: https://chrome.google.com/webstore/detail/http-header-live/jljeikaiehipjcfbpedmgikbbhmknpkk
 <br />
+
+<b>If a bug is found please report here</b>
+https://github.com/Nitrama/HTTP-Header-Live/issues
+
+<br />
+Version 0.6.3.0<br />
+Rewrite Code for HTTPHeaderMain.js<br />
+Script is a bit faster now<br />
+Is now also nice to read :-)<br />
+<br />
+----Fixed: File Download Post data for XML Request<br />
+----Fixed: undefined output on Console.log<br />
+<br />
+Version 0.6.2.2<br />
+----Fixed: XML Request Post data not Show<br />
+<br />
+Version 0.6.2.1<br />
+----Fixed: HTTP Auth request<br />
+<br />
+Version 0.6.1<br />
+----added: HTTP Auth request<br />
+<br />
 Version 0.6<br />
 ---- First RELEASE for Google Chrome
 ----added: Support for language<br />
