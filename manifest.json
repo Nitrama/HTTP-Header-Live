@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
-	"version": "0.6",
+	"version": "0.6.3",
 	"author": "Martin Antrag",
 	"homepage_url":"https://github.com/Nitrama/HTTP-Header-Live/",
 	"default_locale": "en",
@@ -22,7 +22,7 @@
 		"<all_urls>"
 	],
 	"sidebar_action": {
-		"default_icon": "icons/icon_neu.svg",
+		"default_icon": "icons/icon.svg",
 		"default_title" : "__MSG_extensionName__",
 		"default_panel": "HTTPHeaderMain.html"
 	},
@@ -38,7 +38,7 @@
 	"applications":{
 		"gecko":{
 			"id": "{ed102056-8b4f-43a9-99cd-6d1b25abe87e}",
-			"strict_min_version": "53.0"
+			"strict_min_version": "54.0"
 		}
 	}
 }	
