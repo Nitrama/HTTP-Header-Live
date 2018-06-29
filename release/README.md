@@ -8,15 +8,15 @@ https://github.com/Nitrama/HTTP-Header-Live/issues
 
 <br />
 Version 0.6.3.0<br />
-Rewrite Code for HTTPHeaderMain.js
-Script is a bit faster now
-Is now also nice to read :-)
-
+Rewrite Code for HTTPHeaderMain.js<br />
+Script is a bit faster now<br />
+Is now also nice to read :-)<br />
+<br />
 ----Fixed: File Download Post data for XML Request<br />
-----Fixed: undefined output on Console.log
+----Fixed: undefined output on Console.log<br />
 <br />
 Version 0.6.2.2<br />
-----Fixed: XML Request Post data not Show
+----Fixed: XML Request Post data not Show<br />
 <br />
 Version 0.6.2.1<br />
 ----Fixed: HTTP Auth request<br />
