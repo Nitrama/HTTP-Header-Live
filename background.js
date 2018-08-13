@@ -14,4 +14,4 @@ function handleInstalled(details) {
         url: "https://github.com/Nitrama/HTTP-Header-Live/blob/master/release/README.md"
     });
 }
-browser.runtime.onInstalled.addListener(handleInstalled);
+//browser.runtime.onInstalled.addListener(handleInstalled);
