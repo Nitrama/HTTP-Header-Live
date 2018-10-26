@@ -1,85 +1,87 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/style_options.css">
-	</head>
-	
-	<body>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/style_options.css">
+</head>
+
+<body>
+	<div>
+		<label id="newtab_label" data-i18n="newtab_checkbox"><input type="checkbox" id="newtab_checkbox"></label>
+	</div>
+	<div><br></div>
+	<div>
 		<div>
-			<label id="newtab_label" data-i18n="newtab_checkbox"><input type="checkbox" id="newtab_checkbox"></label>
+			<label class="big" data-i18n="exlude_urls"></label>
 		</div>
-		<div><br></div>
+		<div class="select">
+			<ul id="exclude_url">
+			</ul>
+		</div>
 		<div>
-			<div>
-				<label class="big" data-i18n="exlude_urls"></label>
-			</div>
+			<button id="button_activate_url" data-i18n="button_activate"></button>
+			<button id="button_deactivate_url" data-i18n="button_deactivate"></button>
+			<button id="button_delete_url" data-i18n="button_delete"></button>
+		</div>
+		<div>
+			<label data-i18n="add_new_url"></label><input placeholder="url,url,url" id="input_new_url"></input><button id="button_new_url" data-i18n="ok_button"></button>
+		</div>
+
+	</div>
+	<div><br></div>
+	<div>
+		<div>
+			<label class="big" data-i18n="exlude_file_extension"></label>
+		</div>
+		<div>
 			<div class="select">
-				<ul id="exclude_url">
+				<ul id="exclude_file">
 				</ul>
 			</div>
-			<div>
-				<button id="button_activate_url" data-i18n="button_activate"></button>
-				<button id="button_deactivate_url" data-i18n="button_deactivate"></button>
-				<button id="button_delete_url"data-i18n="button_delete"></button>
-			</div>
-			<div>
-				<label data-i18n="add_new_url" ></label><input placeholder="url,url,url" id="input_new_url"></input><button id="button_new_url" data-i18n="ok_button"></button>
-			</div>
-			
 		</div>
-		<div><br></div>
 		<div>
-			<div>
-				<label class="big"data-i18n="exlude_file_extension"></label>
-			</div>
-			<div>
-				<div class="select">
-					<ul id="exclude_file">
-					</ul>
-				</div>
-			</div>
-			<div>
-				<button id="button_activate_file"data-i18n="button_activate"></button>
-				<button id="button_deactivate_file" data-i18n="button_deactivate"></button>
-				<button id="button_delete_file"data-i18n="button_delete"></button>
-			</div>
-			<div>
-				<label data-i18n="add_new_file_extension"></label><input placeholder=".jpg,.bmp,.css" id="input_new_file"></input><button id="button_new_file" data-i18n="ok_button"></button>
-			</div>
+			<button id="button_activate_file" data-i18n="button_activate"></button>
+			<button id="button_deactivate_file" data-i18n="button_deactivate"></button>
+			<button id="button_delete_file" data-i18n="button_delete"></button>
 		</div>
-		<div><br></div>
 		<div>
-			<div>
-				<label class="big" data-i18n="include_text_in_url"></label>
-			</div>
-			<div>
-				<div class="select">
-					<ul id="include_text">
-					</ul>
-				</div>
-			</div>
-			<div>
-				<button id="button_activate_text" data-i18n="button_activate"></button>
-				<button id="button_deactivate_text" data-i18n="button_deactivate"></button>
-				<button id="button_delete_text" data-i18n="button_delete"></button>
-			</div>
-			<div>
-				<label data-i18n="add_new_text"></label><input placeholder="test_text" id="input_new_text"></input><button id="button_new_text" data-i18n="ok_button"></button>
-			</div>
+			<label data-i18n="add_new_file_extension"></label><input placeholder=".jpg,.bmp,.css" id="input_new_file"></input><button id="button_new_file" data-i18n="ok_button"></button>
 		</div>
-		<div><br></div>
+	</div>
+	<div><br></div>
+	<div>
 		<div>
-			<div>
-				<label class="big"data-i18n="Backup"></label>
-			</div>
-			<button id="save_backup" data-i18n="save_backup"></button><br>
-			<input id="input_load_backup" type="file"><button id="load_backup" data-i18n="load_backup"></button>
-			
+			<label class="big" data-i18n="include_text_in_url"></label>
 		</div>
-		<script src="internationalization.js" ></script>
-		<script src="updateStorage.js" ></script>
-		<script src="options.js" ></script>
-	</body>
-</html>														
+		<div>
+			<div class="select">
+				<ul id="include_text">
+				</ul>
+			</div>
+		</div>
+		<div>
+			<button id="button_activate_text" data-i18n="button_activate"></button>
+			<button id="button_deactivate_text" data-i18n="button_deactivate"></button>
+			<button id="button_delete_text" data-i18n="button_delete"></button>
+		</div>
+		<div>
+			<label data-i18n="add_new_text"></label><input placeholder="test_text" id="input_new_text"></input><button id="button_new_text" data-i18n="ok_button"></button>
+		</div>
+	</div>
+	<div><br></div>
+	<div>
+		<div>
+			<label class="big" data-i18n="Backup"></label>
+		</div>
+		<button id="save_backup" data-i18n="save_backup"></button><br>
+		<input id="input_load_backup" type="file"><button id="load_backup" data-i18n="load_backup"></button>
+
+	</div>
+	<script src="internationalization.js"></script>
+	<script src="updateStorage.js"></script>
+	<script src="options.js"></script>
+</body>
+
+</html>

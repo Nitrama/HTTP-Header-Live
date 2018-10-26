@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<title>HTTP Header Live Sub</title>
-		<link rel="shortcut icon" type="image/x-icon" href="icons/icon_neu.svg">
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/style_sub.css">
-    </head>
-	
-	<body>
-		<div class="header_url">
-			<select id="select_method" size="1">
-				<option value="GET" selected>GET</option>
-				<option value="POST">POST</option>
-				<option value="HEAD">HEAD</option>
-				<option value="PUT">PUT</option>
-				<option value="DELETE">DELETE</option>
-				<option value="OPTIONS">OPTIONS</option>
-				<option value="PATCH">PATCH</option>
-            </select><input value="" id="header_url" >
-        </div>
-		<pre contenteditable="true" id="header_data"></pre>
-		<pre contenteditable="true" id="post_data"></pre>
-		<div id="footer"><button type="button" id="replay_send_button" data-i18n="replay_send_button"></button><label id="content_length_label" data-i18n="content_length_label_default"></label></div>
-		<script src="internationalization.js" ></script>
-		<script src="HTTPHeaderSub.js" ></script>
-    </body>
+
+<head>
+	<title>HTTP Header Live Sub</title>
+	<link rel="shortcut icon" type="image/x-icon" href="icons/icon.svg">
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<div class="header_url">
+		<select id="select_method" size="1">
+			<option value="GET" selected>GET</option>
+			<option value="POST">POST</option>
+			<option value="HEAD">HEAD</option>
+			<option value="PUT">PUT</option>
+			<option value="DELETE">DELETE</option>
+			<option value="OPTIONS">OPTIONS</option>
+			<option value="PATCH">PATCH</option>
+		</select><input type="text" value="" id="header_url">
+	</div>
+	<pre contenteditable="true" id="header_data"></pre>
+	<pre contenteditable="true" id="post_data"></pre>
+	<div id="footer"><button type="button" id="replay_send_button" data-i18n="replay_send_button"></button><label id="content_length_label" data-i18n="content_length_label_default"></label></div>
+	<script src="internationalization.js"></script>
+	<script src="load_style.js"></script>
+	<script src="HTTPHeaderSub.js"></script>
+</body>
+
 </html>
