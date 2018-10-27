@@ -1,0 +1,46 @@
+body {
+	font-family: Courier New;	
+}
+
+.big{
+	font-size:larger;
+	font-weight:bold;	
+}
+
+::placeholder {
+	color: LightGray ;
+	opacity:50%;
+}
+
+.select {
+	height: 200px; 
+	overflow: scroll; 
+	width: 400px; 
+	border: 1px solid #000; 
+	white-space:nowrap;
+}
+
+.select ul { 
+	list-style-type: none; 
+	margin: 0;
+	padding: 0;
+}
+
+.select li {
+	margin: 0;
+	padding: 0; 
+}
+
+.select label {
+	display: block;
+	color: WindowText;
+	background-color:Window;
+	margin: 0;
+	padding: 0;
+	width: 100%; 
+}
+
+#select_label {
+	background-color: Highlight; 
+	color: HighlightText; 
+}
