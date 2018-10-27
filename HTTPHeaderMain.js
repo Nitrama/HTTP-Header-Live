@@ -77,9 +77,14 @@ function setdata_webRequest(e) {
       }
       i = 0;
       if (WEBREQUEST_DATA[e.requestId] == undefined) {
-        WEBREQUEST_DATA[e.requestId] = {}
+        WEBREQUEST_DATA[e.requestId] = []
       }
       while (true) {
+        if (e.typ == "onCompleted" || e.typ == "onResponseStarted") {
+          i = WEBREQUEST_DATA[e.requestId].length - 1
+          WEBREQUEST_DATA[e.requestId][i][e.typ] = e
+          break
+        }
         if (WEBREQUEST_DATA[e.requestId][i] == undefined) {
           WEBREQUEST_DATA[e.requestId][i] = {}
         }
