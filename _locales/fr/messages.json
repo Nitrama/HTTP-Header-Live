@@ -1,7 +1,7 @@
 {
 	"extensionName": {"message": "HTTP Header Live"},
 	"extensionDescription": {"message": "Montre les champs d'en-tête HTTP. Vous pouvez les modifier et les renvoyer."},
-	"extension_long_Description":{"message": "Cet add-on est toujours en développement. Il est loin d'être parfait. Merci de reporter bugs et idées à l'addresse suivante : https://github.com/Nitrama/HTTP-Header-Live :-)"},
+	"extension_long_Description":{"message": "Cet add-on est toujours en développement. Il est loin d'être parfait. Veuillez reporter bugs et idées à l'addresse suivante : https://github.com/Nitrama/HTTP-Header-Live Merci :-)"},
 	"clear_button":{"message":"Nettoyer"},
 	"options_button":{"message":"Options"},
 	"save_file_button":{"message":"Sauvegarder dans un fichier"},
