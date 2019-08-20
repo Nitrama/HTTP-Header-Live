@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "__MSG_extensionName__",
-	"version": "0.6.5.1",
+	"version": "0.6.5.2",
 	"author": "Martin Antrag",
 	"homepage_url":"https://github.com/Nitrama/HTTP-Header-Live/",
 	"default_locale": "en",
