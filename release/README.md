@@ -7,6 +7,9 @@ new version Directly download from the Chrome Web Store: https://chrome.google.c
 https://github.com/Nitrama/HTTP-Header-Live/issues
 
 <br />
+Version 0.6.3.1<br />
+Added: Frech language Support https://github.com/Nitrama/HTTP-Header-Live/pull/31<br />
+<br />
 Version 0.6.3.0<br />
 Rewrite Code for HTTPHeaderMain.js<br />
 Script is a bit faster now<br />
@@ -76,4 +79,3 @@ Version 0.1.6<br />
 <br />
 Version 0.1.5<br />
 ----first release<br />
-
