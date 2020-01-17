@@ -1,6 +1,7 @@
 # HTTP-Header-Live
-Directly download from the Firefox Addon-manager: https://addons.mozilla.org/de/firefox/addon/http-header-live/
-Directly download from the Chrome Addon-manager: https://chrome.google.com/webstore/detail/http-header-live/jljeikaiehipjcfbpedmgikbbhmknpkk
+Directly download from the Firefox Addon-manager: https://addons.mozilla.org/de/firefox/addon/http-header-live/<br />
+Directly download from the Chrome Addon-manager: https://chrome.google.com/webstore/detail/http-header-live/jljeikaiehipjcfbpedmgikbbhmknpkk<br />
+
 Google Translator English:<br />
   Open the add-on.<br />
   Search a page with "POST parameters" for example: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_form_method_post<br />
